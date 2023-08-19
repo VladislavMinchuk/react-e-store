@@ -1,17 +1,19 @@
 import { ReactNode } from "react";
-import Header from "../blocks/common/Header";
+import AppHeader from "../blocks/AppHeader";
+import AppFooter from "../blocks/AppFooter";
 
 type MainLayoutProps = {
-    children: ReactNode
+  children: ReactNode
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
-    return (
-        <div className="main-layout">
-            <Header></Header>
-            { children }
-        </div>
-    );
+  return (
+    <div className="main-layout">
+      <AppHeader></AppHeader>
+      { children }
+      <AppFooter></AppFooter>
+    </div>
+  );
 }
 
 export default MainLayout;

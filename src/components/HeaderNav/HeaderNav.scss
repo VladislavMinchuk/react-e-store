@@ -1,0 +1,7 @@
+.nav-link-item {
+  background-color: rgba($success, 0.1);
+
+  @include media-breakpoint-up(md) {
+    background-color: transparent;
+  }
+}
