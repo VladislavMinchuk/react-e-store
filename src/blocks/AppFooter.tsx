@@ -18,10 +18,10 @@ const AppFooter = () => {
     <footer className="app-footer border-top bg-body-tertiary py-4">
       <Container>
         <Row>
-          <Col>
+          <Col xs={12} sm={4} md={2} className="mb-3">
             <Link to="/"><Logo></Logo></Link>
           </Col>
-          <Col>
+          <Col xs={6} sm={4} md={{ offset: 2 }}>
             <h3 className="h5 mb-3">Main products</h3>
             <ul className="list-unstyled">
               {producrsPageNav.map(({ path, title }) => {
@@ -31,7 +31,7 @@ const AppFooter = () => {
               })}
             </ul>
           </Col>
-          <Col>
+          <Col xs={6} sm={4}>
             <h3 className="h5 mb-3">Main products</h3>
             <ul className="list-unstyled">
               {companyPageNav.map(({ path, title }) => {
@@ -42,7 +42,7 @@ const AppFooter = () => {
             </ul>
           </Col>
         </Row>
-        <p className="">Copyrigth</p>
+        <p className="">Copyright © 2023</p>
       </Container>
     </footer>
   )
