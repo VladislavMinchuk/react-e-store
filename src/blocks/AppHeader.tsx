@@ -12,10 +12,9 @@ const AppHeader: FC = () => {
   };
 
   return (
-    <header className="shadow-sm">
+    <header className="shadow-sm bg-body-tertiary">
       <Navbar
         expand="md"
-        className="bg-body-tertiary"
         expanded={navExpanded}
         onToggle={(expanded) => setNavExpanded(expanded)}
       >

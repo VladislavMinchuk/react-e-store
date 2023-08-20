@@ -1,8 +1,11 @@
+import { Container } from "react-bootstrap"
 
 function HomePage() {
   return (
-    <div>
-      <h2>Home</h2>
+    <div className="home-page">
+      <Container>
+        <h2>Home</h2>
+      </Container>
     </div>
   )
 }

@@ -8,11 +8,13 @@ type MainLayoutProps = {
 
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
-    <div className="main-layout">
+    <>
       <AppHeader></AppHeader>
-      { children }
+        <main className="main-layout">
+          { children }
+        </main>
       <AppFooter></AppFooter>
-    </div>
+    </>
   );
 }
 
