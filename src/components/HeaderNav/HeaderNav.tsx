@@ -29,7 +29,7 @@ const HeaderNavigation = ({ className, onClickLink }: NavProps) => {
         <Nav.Item key={idx} className="nav-link-item mx-md-2 mb-1">
           <Link
             to={path}
-            className="d-block d-md-inline link-body-emphasis text-center"
+            className="d-block d-md-inline link-body-emphasis text-center py-2 py-md-0"
             onClick={() => onClickLink()}
           >
             {title}
