@@ -19,8 +19,8 @@ const AppHeader: FC = () => {
         onToggle={(expanded) => setNavExpanded(expanded)}
       >
         <Container>
-          <Link to='/'>
-            <Logo logoWidth="60px"></Logo>
+          <Link to='/' className="text-decoration-none fw-bold lh-1 font-monospace text-info">
+            <Logo logoWidth="60px" showLogoText></Logo>
           </Link>
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

@@ -12,6 +12,7 @@ const MainCarouselHolder = () => {
         <Carousel.Item>
           <div className="img-bg-holder" style={{
             backgroundImage: `url(${image})`,
+            backgroundPosition: 'center',
             backgroundSize: 'cover',
             height: '100vh'
           }}></div>
