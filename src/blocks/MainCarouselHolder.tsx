@@ -8,8 +8,8 @@ const MainCarouselHolder = () => {
 
   return (
     <Carousel controls={false}>
-      {arr.map((image) => (
-        <Carousel.Item>
+      {arr.map((image, idx) => (
+        <Carousel.Item key={idx}>
           <div className="img-bg-holder" style={{
             backgroundImage: `url(${image})`,
             backgroundPosition: 'center',

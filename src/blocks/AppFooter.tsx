@@ -24,8 +24,8 @@ const AppFooter = () => {
           <Col xs={6} sm={4} md={{ offset: 2 }}>
             <h3 className="h5 mb-3">Main products</h3>
             <ul className="list-unstyled">
-              {producrsPageNav.map(({ path, title }) => {
-                return (<li className="mb-3">
+              {producrsPageNav.map(({ path, title }, idx) => {
+                return (<li key={idx} className="mb-3">
                   <Link to={path} className="link-body-emphasis">{title}</Link>
                 </li>);
               })}
@@ -34,8 +34,8 @@ const AppFooter = () => {
           <Col xs={6} sm={4}>
             <h3 className="h5 mb-3">Main products</h3>
             <ul className="list-unstyled">
-              {companyPageNav.map(({ path, title }) => {
-                return (<li className="mb-3">
+              {companyPageNav.map(({ path, title }, idx) => {
+                return (<li key={idx} className="mb-3">
                   <Link to={path} className="link-body-emphasis">{title}</Link>
                 </li>);
               })}

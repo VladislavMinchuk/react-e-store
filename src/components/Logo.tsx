@@ -1,5 +1,5 @@
 export type LogoProps = {
-  logoWidth: string | number | undefined,
+  logoWidth?: string | number | undefined,
   showLogoText?: boolean
 };
 
