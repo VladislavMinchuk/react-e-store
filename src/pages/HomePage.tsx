@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap"
 import MainCarouselHolder from "../blocks/MainCarouselHolder"
-import SpecialProductsSection from "../blocks/specialProductsSection"
+import SpecialProductsSection from "../blocks/SpecialProductsSection"
 
 function HomePage() {
   return (
