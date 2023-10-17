@@ -1,0 +1,17 @@
+.product-card {
+  &:hover {
+    .card-preview-carousel {
+      &__nav-carousel {
+        max-height: 500px;
+        transition: max-height 0.25s ease-in;
+      }
+    }
+  }
+  .card-preview-carousel {
+    &__nav-carousel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.15s ease-out;
+    }
+  }
+}

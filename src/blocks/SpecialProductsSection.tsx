@@ -10,7 +10,22 @@ const SpecialProductsSection = () => {
           <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Et quaerat dolor quos nemo recusandae temporibus nihil dicta vero earum odit quo excepturi non dolore, ad facere nisi dolorum. Nobis, molestiae?</p>
         </Col>
         <Row>
-          <Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
+            <ProductCard></ProductCard>
+          </Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
+            <ProductCard></ProductCard>
+          </Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
+            <ProductCard></ProductCard>
+          </Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
+            <ProductCard></ProductCard>
+          </Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
+            <ProductCard></ProductCard>
+          </Col>
+          <Col xs md={6} lg={4} xl={3} className="mb-4">
             <ProductCard></ProductCard>
           </Col>
         </Row>

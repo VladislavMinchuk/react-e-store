@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import { useRef, useState } from 'react';
+import React, { useState } from 'react';
 // Styles
 import '../assets/styles/components/CardPreviewCarousel.scss';
 
@@ -18,31 +18,40 @@ const settings = {
   arrows: false
 };
 
-const CardPreviewCarousel = ({ imagesArray }: CarouselProps) => {
-  const [nav1, setNav1] = useState<Slider>();
-  const [activeImgIdx, setActiveImgIdx] = useState<Number>(0);
+const CardPreviewCarousel:React.FC<CarouselProps> = ({ imagesArray }) => {
+  const [mainNavSlider, setMainNavSlider] = useState<Slider>();
+  const [activeImgIndex, setActiveImgIndex] = useState<Number>(0);
 
-  const sliderItemHandler = (idx: number) => {
-    console.log(idx);
-    setActiveImgIdx(idx);
-    nav1?.slickGoTo(idx);
+  const sliderMouseEnterHandler = (index: number) => {
+    setActiveImgIndex(index);
+    mainNavSlider?.slickGoTo(index);
+  }
+  
+  const afterChangeSlickHandler = (index: number) => {
+    setActiveImgIndex(index);
   }
 
   return (
     <div className="card-preview-carousel">
-      <Slider {...settings} ref={(slider1: Slider) => setNav1(slider1)}>
-        {imagesArray.map((imageSrc, idx) => (
-          <div key={idx}>
+      <Slider className="card-preview-carousel__main-imgs" {...settings} ref={(slider1: Slider) => setMainNavSlider(slider1)}>
+        {imagesArray.map((imageSrc, index) => (
+          <div className="main-img-wrap" key={index}>
             <img src={imageSrc} style={{ width: '100%' }} alt="image item" />
           </div>
         ))}
       </Slider>
-      <Slider className="card-preview-carousel__nav-carousel" asNavFor={nav1} slidesToShow={3}>
-        {imagesArray.map((imageSrc, idx) => (
+      <Slider
+        className="card-preview-carousel__nav-carousel"
+        infinite={true}
+        asNavFor={mainNavSlider}
+        slidesToShow={3}
+        beforeChange={(_, newIndex) => {afterChangeSlickHandler(newIndex)}}
+      >
+        {imagesArray.map((imageSrc, index) => (
           <div
-            key={idx}
-            onMouseEnter={() => sliderItemHandler(idx)}
-            className={ `img-nav-wrap ${activeImgIdx === idx ? 'img-active' : ''}` }
+            key={index}
+            onMouseEnter={() => sliderMouseEnterHandler(index)}
+            className={ `img-nav-wrap ${activeImgIndex === index ? 'img-active' : ''}` }
           >
             <img src={imageSrc} style={{ width: 'calc(18rem/3)' }} alt="image item" />
           </div>

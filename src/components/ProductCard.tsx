@@ -1,16 +1,41 @@
+import React, { ElementRef, useRef } from "react";
 import { Card, Button } from "react-bootstrap";
-import ProductIMG from '../assets/images/adid_or_spez_01_lg.jpg';
 import previewImg_01 from '../assets/images/adid_or_spez_01_sm.webp';
 import previewImg_02 from '../assets/images/adid_or_spez_02_sm.webp';
 import previewImg_03 from '../assets/images/adid_or_spez_03_sm.webp';
 import previewImg_04 from '../assets/images/adid_or_spez_04_sm.webp';
+import previewImg_05 from '../assets/images/adid_or_spez_05_sm.webp';
+import previewImg_06 from '../assets/images/adid_or_spez_06_sm.webp';
+import previewImg_07 from '../assets/images/adid_or_spez_07_sm.webp';
+import previewImg_08 from '../assets/images/adid_or_spez_08_sm.jpg';
 import CardPreviewCarousel from "./CardPreviewCarousel";
+import '../assets/styles/components/ProductCard.scss';
 
-const ProductCard = () => {
-  const previewImgs = [previewImg_01, previewImg_02, previewImg_03, previewImg_04]; // static imgs
+export type ProductCardProps = {
+  cardWidth?: string
+}
+
+const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
+  const previewImgs = [previewImg_01, previewImg_02, previewImg_03, previewImg_04, previewImg_05, previewImg_06, previewImg_07, previewImg_08]; // static imgs
+
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const mouseEnterHandler = () => {
+    console.log(cardRef?.current?.offsetHeight);
+  }
+
+  const mouseLeaveHandler = () => {
+    console.log(cardRef?.current?.offsetHeight);
+  }
 
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card
+      ref={cardRef}
+      onMouseEnter={mouseEnterHandler}
+      onMouseLeave={mouseLeaveHandler}
+      className="product-card my-0 mx-auto"
+      style={{ width: cardWidth }}
+    >
       <div className="card-img-wrap">
         {/* Favorite  icon */}
         <CardPreviewCarousel imagesArray={previewImgs}></CardPreviewCarousel>
@@ -20,10 +45,9 @@ const ProductCard = () => {
       <Card.Body>
         <Card.Title>Card Title</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          Colors: 3
         </Card.Text>
-        {/* Description list */}
+        <Button variant="warning">View</Button>
       </Card.Body>
     </Card>
   )

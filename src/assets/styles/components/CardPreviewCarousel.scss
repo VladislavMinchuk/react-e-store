@@ -1,10 +1,21 @@
 .card-preview-carousel {
+  &__main-imgs {
+    .main-img-wrap {
+      
+      img {
+        max-height: 300px;
+        object-fit: contain;
+      }
+    }
+  }
+
   .slick-arrow  {
     z-index: 10;
 
     &.slick-next,
     &.slick-prev {
       &:before {
+        font-size: 24px;
         color: $black;
       }
     }
