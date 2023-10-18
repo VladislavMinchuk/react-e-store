@@ -1,4 +1,4 @@
-import React, { ElementRef, useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import previewImg_01 from '../assets/images/adid_or_spez_01_sm.webp';
 import previewImg_02 from '../assets/images/adid_or_spez_02_sm.webp';
@@ -17,15 +17,19 @@ export type ProductCardProps = {
 
 const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
   const previewImgs = [previewImg_01, previewImg_02, previewImg_03, previewImg_04, previewImg_05, previewImg_06, previewImg_07, previewImg_08]; // static imgs
+  const [cardHeight, setCardHeight] = useState('auto');
+  const [activeCard, setActiveCard] = useState('');
 
   const cardRef = useRef<HTMLDivElement>(null);
 
   const mouseEnterHandler = () => {
-    console.log(cardRef?.current?.offsetHeight);
+    setCardHeight(`${cardRef?.current?.offsetHeight}px`);
+    setActiveCard('isActive');
   }
-
+  
   const mouseLeaveHandler = () => {
-    console.log(cardRef?.current?.offsetHeight);
+    setCardHeight('auto');
+    setActiveCard('');
   }
 
   return (
@@ -33,22 +37,27 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
       ref={cardRef}
       onMouseEnter={mouseEnterHandler}
       onMouseLeave={mouseLeaveHandler}
-      className="product-card my-0 mx-auto"
-      style={{ width: cardWidth }}
+      className={`${activeCard} product-card my-0 mx-auto`}
+      style={{ width: cardWidth, height: cardHeight }}
     >
-      <div className="card-img-wrap">
-        {/* Favorite  icon */}
-        <CardPreviewCarousel imagesArray={previewImgs}></CardPreviewCarousel>
-        {/* Price info */}
+      <div className="product-card__content-wrap">
+        <div className="card-img-wrap">
+          {/* Favorite  icon */}
+          <CardPreviewCarousel imagesArray={previewImgs}></CardPreviewCarousel>
+          {/* Price info */}
+        </div>
+        {/* Slick should be here */}
+        <Card.Body>
+          <Card.Title>Card Title</Card.Title>
+          <Card.Text>
+            Colors: 3
+          </Card.Text>
+          <div className="d-flex justify-content-between">
+            <Button variant="info" className="link-light">View</Button>
+            <Button variant="success">Add to cart</Button>
+          </div>
+        </Card.Body>
       </div>
-      {/* Slick should be here */}
-      <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-        <Card.Text>
-          Colors: 3
-        </Card.Text>
-        <Button variant="warning">View</Button>
-      </Card.Body>
     </Card>
   )
 }

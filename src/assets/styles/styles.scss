@@ -1,11 +1,14 @@
 
 /* customizations  */
 @import './variables';
+@import './include-media';
 
 #root {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
+  @include media('>=desktop') {
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
 }
 
 @import "bootstrap";

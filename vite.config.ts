@@ -7,7 +7,12 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "bootstrap/scss/functions"; @import "bootstrap/scss/variables"; @import "bootstrap/scss/mixins";`
+        additionalData: `
+          @import "bootstrap/scss/functions";
+          @import "bootstrap/scss/variables";
+          @import "bootstrap/scss/mixins";
+          @import "./src/assets/styles/_include-media";
+        `
       }
     }
   }

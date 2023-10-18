@@ -1,17 +1,36 @@
 .product-card {
-  &:hover {
-    .card-preview-carousel {
-      &__nav-carousel {
-        max-height: 500px;
-        transition: max-height 0.25s ease-in;
+  position: relative;
+  border: none;
+  z-index: 10;
+  
+  &.isActive {
+    z-index: 20;
+
+    @include media('>=desktop') {
+      .product-card__content-wrap {
+        box-shadow: 0px 0px 12px 0px rgba($black, .5);
+      }
+      
+      .card-preview-carousel {
+        &__nav-carousel {
+          height: auto;
+        }
       }
     }
+
   }
+  
+  &__content-wrap {
+    // border: 1px solid rgba($black, .5);
+    background-color: $white;
+  }
+
   .card-preview-carousel {
     &__nav-carousel {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.15s ease-out;
+      @include media('>=desktop') {
+        height: 0;
+        overflow: hidden;
+      }
     }
   }
 }
