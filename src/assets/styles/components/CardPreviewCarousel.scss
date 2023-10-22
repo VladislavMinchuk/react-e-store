@@ -9,25 +9,6 @@
     }
   }
 
-  .slick-arrow  {
-    z-index: 10;
-
-    &.slick-next,
-    &.slick-prev {
-      &:before {
-        font-size: 24px;
-        color: $black;
-      }
-    }
-
-    &.slick-next {
-      right: 2px;
-    }
-    &.slick-prev {
-      left: 0;
-    }
-  }
-
   &__nav-carousel {
     .img-nav-wrap {
       position: relative;

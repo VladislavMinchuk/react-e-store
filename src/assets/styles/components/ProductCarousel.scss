@@ -1,0 +1,10 @@
+.product-carousel {
+  img {
+    max-height: 300px;
+    object-fit: contain;
+
+    @include media('>=tablet') {
+      max-height: 500px;
+    }
+  }
+}
