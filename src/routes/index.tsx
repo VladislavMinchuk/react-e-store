@@ -1,6 +1,7 @@
 import AboutPage from "../pages/AboutPage";
 import HomePage from "../pages/HomePage";
 import ProductsPage from "../pages/ProductsPage";
+import SingleProductPage from "../pages/SingleProductPage";
 
 export const router = [
   {
@@ -22,5 +23,9 @@ export const router = [
   {
     path: '/kids',
     element: <ProductsPage/>
+  },
+  {
+    path: '/product/:id',
+    element: <SingleProductPage/>
   },
 ];

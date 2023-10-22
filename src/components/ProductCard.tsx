@@ -10,6 +10,7 @@ import previewImg_07 from '../assets/images/adid_or_spez_07_sm.webp';
 import previewImg_08 from '../assets/images/adid_or_spez_08_sm.jpg';
 import CardPreviewCarousel from "./CardPreviewCarousel";
 import '../assets/styles/components/ProductCard.scss';
+import { Link } from "react-router-dom";
 
 export type ProductCardProps = {
   cardWidth?: string
@@ -52,8 +53,12 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
           <Card.Text>
             Colors: 3
           </Card.Text>
+          {/* TODO: move action buttons to the img wrapper */}
           <div className="d-flex justify-content-between">
-            <Button variant="info" className="link-light">View</Button>
+            {/* static router ID */}
+            <Link to="/product/1" className="link-light btn btn-info text-center">
+              View
+            </Link>
             <Button variant="success">Add to cart</Button>
           </div>
         </Card.Body>
