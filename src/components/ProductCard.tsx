@@ -51,7 +51,7 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
             <Link to="/product/1" className="link-light btn btn-info text-center">
               View
             </Link>
-            <Button variant="success">Add to cart</Button>
+            <Button variant="success" className="text-white">Add to cart</Button>
           </div>
         </Card.Body>
       </div>

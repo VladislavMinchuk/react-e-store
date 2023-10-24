@@ -11,7 +11,8 @@ export default defineConfig({
           @import "bootstrap/scss/functions";
           @import "bootstrap/scss/variables";
           @import "bootstrap/scss/mixins";
-          @import "./src/assets/styles/_include-media";
+          @import "./src/assets/styles/variables";
+          @import "./src/assets/styles/include-media";
         `
       }
     }
