@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Button } from "react-bootstrap";
 import Form from 'react-bootstrap/Form';
+import InputCounter from "./InputCounter";
 
 export type ProductOrderQuickFormProps = {
   shoesSize: Array<{size: string, id: number}>, // TODO: should be interface
@@ -29,6 +30,9 @@ const ProductOrderQuickForm:React.FC<ProductOrderQuickFormProps> = ({ shoesSize 
           return <option key={id} value={id}>{size}</option>
         })}
       </Form.Select>
+
+      <InputCounter></InputCounter>
+
       <div className="d-flex flex-row align-items-start justify-content-between">
         <Button disabled={!!selectedSizeId} variant="info" className="text-white flex-grow-1 mb-2 mb-md-0 me-2">Add to cart</Button>
         <Button disabled={!!selectedSizeId} variant="success" className="text-white flex-grow-1">Order now</Button>
