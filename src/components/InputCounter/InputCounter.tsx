@@ -9,24 +9,25 @@ const InputCounter:React.FC<InputCounterProps> = () => {
 
   const onChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = event;
-    const resultValue = numberPattern.test(value) ? value : '';
-    setQuantity(resultValue);
+    if (numberPattern.test(value)) setQuantity(value);
+  }
+
+  const incrementHandler = () => {
+    setQuantity(Number(quantity) + 1);
+  }
+  const decrementHandler = () => {
+    setQuantity(Number(quantity) - 1);
   }
 
   return (
     <InputGroup size="sm" className="input-counter">
-      <Button>+</Button>
+      <Button onClick={decrementHandler}>-</Button>
       <Form.Control
-        value={quantity}
-        onChange={onChangeHandler}
         type="text"
-      />
-      {/* <input
-        type="number"
         value={quantity}
         onChange={onChangeHandler}
-      /> */}
-      <Button>-</Button>
+      />
+      <Button onClick={incrementHandler}>+</Button>
     </InputGroup>
   );
 };
