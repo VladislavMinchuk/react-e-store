@@ -3,6 +3,18 @@
 @import './variables';
 @import './include-media';
 
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 #root {
   @include media('>=desktop') {
     min-height: 100vh;
