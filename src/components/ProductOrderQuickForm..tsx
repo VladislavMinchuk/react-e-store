@@ -11,8 +11,13 @@ export type ProductOrderQuickFormProps = {
 
 const ProductOrderQuickForm:React.FC<ProductOrderQuickFormProps> = ({ shoesSize }) => {
   const [selectedSizeId, setSelectedSizeId] = useState<undefined | number>();
+
   const selectHandler = ({ target }: ChangeEvent<HTMLSelectElement>): void => {
     setSelectedSizeId(Number(target.value));
+  }
+
+  const quantityHandler = (quantity: number | string): void => {
+    console.log(quantity);
   }
 
   return (
@@ -31,7 +36,7 @@ const ProductOrderQuickForm:React.FC<ProductOrderQuickFormProps> = ({ shoesSize 
         })}
       </Form.Select>
 
-      <InputCounter></InputCounter>
+      <InputCounter inputChangeHandler={quantityHandler}></InputCounter>
 
       <div className="d-flex flex-row align-items-start justify-content-between">
         <Button disabled={!!selectedSizeId} variant="info" className="text-white flex-grow-1 mb-2 mb-md-0 me-2">Add to cart</Button>
