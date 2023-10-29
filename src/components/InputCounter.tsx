@@ -9,9 +9,9 @@ export type InputCounterProps = {
 };
 
 const InputCounter:React.FC<InputCounterProps> = ({
-  defaultValue,
-  maxValue,
-  minValue = 0,
+  defaultValue = 1,
+  maxValue = 10000,
+  minValue = 1,
   inputChangeHandler
 }) => {
   const numberPattern = /[^0-9]/g;
@@ -54,14 +54,15 @@ const InputCounter:React.FC<InputCounterProps> = ({
   }, [defaultValue, minValue, maxValue]);
 
   return (
-    <InputGroup size="sm" className="input-counter">
-      <Button onClick={decrementHandler}>-</Button>
+    <InputGroup size="sm" className="input-counter mx-auto mb-3" style={{ maxWidth: '210px' }}>
+      <Button variant="secondary" onClick={decrementHandler}>-</Button>
       <Form.Control
         type="text"
         value={quantity}
         onChange={onChangeHandler}
+        className="text-center mx-3"
       />
-      <Button onClick={incrementHandler}>+</Button>
+      <Button variant="secondary" onClick={incrementHandler}>+</Button>
     </InputGroup>
   );
 };
