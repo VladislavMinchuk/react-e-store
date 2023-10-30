@@ -2,6 +2,7 @@ import AboutPage from "../pages/AboutPage";
 import HomePage from "../pages/HomePage";
 import ProductsPage from "../pages/ProductsPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
+import CartPage from "../pages/CartPage";
 
 export const router = [
   {
@@ -27,5 +28,9 @@ export const router = [
   {
     path: '/product/:id',
     element: <ProductDetailsPage/>
+  },
+  {
+    path: '/cart',
+    element: <CartPage/>
   },
 ];
