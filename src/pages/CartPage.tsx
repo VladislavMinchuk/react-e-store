@@ -1,10 +1,10 @@
 import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import CartItem from "../components/CartItem";
+import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components/CartItem";
 import { productImagesArr } from "../constans";
 
-// Statis list TODO: move to state
-const productsList = [
+// Statis list TODO: move to state, cretate interface for the list item
+const cartList = [
   {
     id: 1,
     title: 'Origin Shoes star',
@@ -12,6 +12,7 @@ const productsList = [
     price: 120,
     size: '39',
     quantity: 2,
+    total: 240
   },
   {
     id: 2,
@@ -20,13 +21,18 @@ const productsList = [
     price: 80,
     size: '36',
     quantity: 1,
+    total: 80
   }
 ];
 
 const CartPage:React.FC = () => {
-  const removeCartItem = (productId: number): void => {
+  const removeCartItem = ({ productId }: IRemoveHandlerArgs): void => {
     console.log(productId);
   };
+
+  const updateCartItemQuantity = (updatedItem: IUpdateQuantityArgs): void => {
+    console.log(updatedItem);
+  }
 
   return (
     <section className="cart-section py-5">
@@ -35,16 +41,20 @@ const CartPage:React.FC = () => {
           <h2 className="mb-0 me-auto">Your cart</h2>
         </header>
         <Row>
-          <Col xs={12} lg={2} xl={3} className="order-md-2">
-            <Button variant="info">Continue order</Button>
-            <p><strong>Total:</strong> should count total amount</p>
+          <Col xs={12} lg={2} xl={3} className="order-lg-2">
+            <Button variant="info" className="cart-section__order-btn w-100 mb-3">Continue order</Button>
+            <p><strong>Total:</strong> should count total amount $</p>
           </Col>
-          <Col xs={12} lg={10} xl={9} className="order-md-1">
+          <Col xs={12} lg={10} xl={9} className="order-lg-1">
             <ul>
-              {productsList.map((productItem) => {
+              {cartList.map((productItem) => {
                 return (
                   <li key={productItem.id} className="mb-2">
-                    <CartItem {...productItem} removeHandler={removeCartItem}></CartItem>
+                    <CartItem
+                      {...productItem}
+                      removeHandler={removeCartItem}
+                      updateQuantity={updateCartItemQuantity}
+                    />
                   </li>
                 );
               })}

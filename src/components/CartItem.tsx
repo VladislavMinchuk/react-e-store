@@ -1,6 +1,15 @@
 import React from "react";
 import InputCounter from "./InputCounter";
-import '../assets/styles/components/CartItem.scss'
+import '../assets/styles/components/CartItem.scss';
+
+export interface IUpdateQuantityArgs {
+  id: number,
+  quantity: string | number
+}
+
+export interface IRemoveHandlerArgs {
+  productId: number
+}
 
 export type CartItemProps = {
   id: number,
@@ -9,7 +18,8 @@ export type CartItemProps = {
   price: number,
   quantity: number | string,
   size: string,
-  removeHandler: (productId: number) => void
+  removeHandler: (updatedItem: IRemoveHandlerArgs) => void
+  updateQuantity: (updatedItem: IUpdateQuantityArgs) => void
 };
 
 const CartItem:React.FC<CartItemProps> = ({
@@ -19,10 +29,14 @@ const CartItem:React.FC<CartItemProps> = ({
   price,
   quantity,
   size,
-  removeHandler
+  removeHandler,
+  updateQuantity
 }) => {
-  const quantityHandler = (quantityValue: string | number): void => {};
+  const quantityHandler = (quantityValue: string | number): void => {
+    updateQuantity({ id, quantity: quantityValue }); // Outside call
+  };
 
+  const removeItem = () => { removeHandler({ productId: id }); }; // Outside call
 
   return (
     <div className="cart-item d-md-flex align-items-center p-3">
@@ -32,13 +46,13 @@ const CartItem:React.FC<CartItemProps> = ({
       <div className="cart-item__info">
         <h4>{title}</h4>
         <p className="mb-1"><strong>Price:</strong> {price} $</p>
-        <p><strong>Size:</strong> {size} $</p>
+        <p><strong>Size:</strong> {size}</p>
         <InputCounter defaultValue={quantity} inputChangeHandler={quantityHandler}/>
       </div>
       <button
         className="cart-item__remove-btn"
         aria-label="remove cart item"
-        onClick={() => {removeHandler(id)}}
+        onClick={removeItem}
       ></button>
     </div>
   );

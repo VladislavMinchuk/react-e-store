@@ -12,6 +12,7 @@
     background-color: transparent;
     border: none;
     padding: 0;
+    transition: transform 0.2s;
 
     &:after,
     &:before {
@@ -30,6 +31,10 @@
 
     &:before {
       transform: rotate(-45deg);
+    }
+
+    &:hover {
+      transform: scale(1.2) rotate(90deg);
     }
   }
 
