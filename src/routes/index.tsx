@@ -1,6 +1,6 @@
 import AboutPage from "../pages/AboutPage";
 import HomePage from "../pages/HomePage";
-import ProductsPage from "../pages/ProductsPage";
+import ProductListPage from "../pages/ProductListPage";
 import ProductDetailsPage from "../pages/ProductDetailsPage";
 import CartPage from "../pages/CartPage";
 
@@ -15,15 +15,15 @@ export const router = [
   },
   {
     path: '/women',
-    element: <ProductsPage/>
+    element: <ProductListPage/>
   },
   {
     path: '/man',
-    element: <ProductsPage/>
+    element: <ProductListPage/>
   },
   {
     path: '/kids',
-    element: <ProductsPage/>
+    element: <ProductListPage/>
   },
   {
     path: '/product/:id',
