@@ -15,7 +15,7 @@ const AppFooter = () => {
   ];
 
   return (
-    <footer className="app-footer border-top bg-body-tertiary py-4">
+    <footer className="app-footer border-top bg-light py-4">
       <Container>
         <Row>
           <Col xs={12} sm={4} md={2} className="mb-3">

@@ -17,9 +17,9 @@ const ProductListGrid:FC<ProductListGridProps> = ({
   }) => {
   return (
     <Row>
-      { productList.map((productItem) => {
+      { productList.map((productItem, idx) => {
         return (
-          <Col xs={xs} md={md} lg={lg} xl={xl} xxl={xxl} className="mb-3 mb-lg-4">
+          <Col key={idx} xs={xs} md={md} lg={lg} xl={xl} xxl={xxl} className="mb-3 mb-lg-4">
             <ProductCard></ProductCard>
           </Col>
         );
