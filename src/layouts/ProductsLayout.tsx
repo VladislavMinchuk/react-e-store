@@ -9,7 +9,7 @@ type ProductsLayoutProps = {
 
 const ProductsLayout = ({ aside, mainContent, title }: ProductsLayoutProps) => {
   return (
-    <div className="products-layout">
+    <div className="products-layout py-4">
       <section>
         <Container>
           <header className="mb-4">
