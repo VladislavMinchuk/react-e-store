@@ -48,10 +48,10 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
           {/* TODO: move action buttons to the img wrapper */}
           <div className="d-flex justify-content-between">
             {/* static router ID */}
-            <Link to="/product/1" className="link-light btn btn-info text-center">
+            <Link to="/product/1" className="link-light btn btn-primary text-center">
               View
             </Link>
-            <Button variant="success" className="text-white">Add to cart</Button>
+            <Button variant="secondary" className="text-white">Add to cart</Button>
           </div>
         </Card.Body>
       </div>

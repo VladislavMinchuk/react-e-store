@@ -5,7 +5,7 @@ $orenge: #ffaaaa;
 // scss-docs-start gray-color-variables
 $white:    #fff;
 $gray-100: #f8f9fa;
-$gray-200: #e9ecef;
+$gray-200: #f5f4f2;
 $gray-300: #dee2e6;
 $gray-400: #ced4da;
 $gray-500: #adb5bd;
@@ -43,6 +43,10 @@ $yellow:  #ffc107;
 $green:   #33d02f;
 $teal:    #20c997;
 $cyan:    #0dcaf0;
+$sage-light:     #ECE3CE;
+$sage:           #739072;
+$sage-dark-100:  #4F6F52;
+$sage-dark-200:  #3A4D39;
 // scss-docs-end color-variables
 
 // scss-docs-start colors-map
@@ -65,13 +69,13 @@ $colors: (
 // scss-docs-end colors-map
 
 // scss-docs-start theme-color-variables
-$primary:       $blue;
-$secondary:     $gray-600;
+$primary:       $sage;
+$secondary:     $sage-dark-200;
 $success:       $green;
-$info:          $cyan;
+$info:          $sage-dark-100;
 $warning:       $yellow;
 $danger:        $red;
-$light:         $gray-100;
+$light:         $gray-200;
 $dark:          $gray-900;
 
 // scss-docs-start theme-colors-map
@@ -96,6 +100,28 @@ $spacers: (
   4: $spacer * 1.5,
   5: $spacer * 3,
 );
+
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-text-align:           null !default;
+$body-color:                $gray-900 !default;
+$body-bg:                   $white;
+
+$body-secondary-color:      rgba($body-color, .75) !default;
+$body-secondary-bg:         $gray-200 !default;
+
+$body-tertiary-color:       rgba($body-color, .5) !default;
+$body-tertiary-bg:          $gray-100 !default;
+
+$body-emphasis-color:       $black !default;
+
+// Borders
+
+$border-color:                $primary;
+$border-color-translucent:    $border-color;
+
 
 // Global border
 $border-radius: 0;

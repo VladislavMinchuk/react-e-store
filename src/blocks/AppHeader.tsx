@@ -12,7 +12,7 @@ const AppHeader: FC = () => {
   };
 
   return (
-    <header className="shadow-sm bg-body-tertiary">
+    <header className="shadow-sm bg-light">
       <Navbar
         expand="md"
         expanded={navExpanded}

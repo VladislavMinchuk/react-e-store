@@ -39,8 +39,8 @@ const ProductOrderQuickForm:React.FC<ProductOrderQuickFormProps> = ({ shoesSize 
       <InputCounter inputChangeHandler={quantityHandler}></InputCounter>
 
       <div className="d-flex flex-row align-items-start justify-content-between">
-        <Button disabled={!!selectedSizeId} variant="info" className="text-white flex-grow-1 mb-2 mb-md-0 me-2">Add to cart</Button>
-        <Button disabled={!!selectedSizeId} variant="success" className="text-white flex-grow-1">Order now</Button>
+        <Button disabled={!!selectedSizeId} variant="primary" className="text-white flex-grow-1 mb-2 mb-md-0 me-2">Add to cart</Button>
+        <Button disabled={!!selectedSizeId} variant="secondary" className="text-white flex-grow-1">Order now</Button>
       </div>
     </form>
   );

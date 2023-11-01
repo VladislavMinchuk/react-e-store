@@ -14,7 +14,7 @@ const HeaderUserBlock = ({ onClickLink }: UserBlockProps) => {
       <Dropdown>
         <Dropdown.Toggle
           variant="link"
-          className='text-primary'
+          className='text-secondary'
         >
           <FontAwesomeSvgIcon icon={faUser} />
         </Dropdown.Toggle>
