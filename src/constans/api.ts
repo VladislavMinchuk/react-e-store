@@ -1,6 +1,7 @@
 import { productImagesArr } from ".";
+import { IProductItem } from "../interfaces";
 
-export const singleProduct = {
+export const singleProduct: IProductItem = {
   id: 1,
   title: 'Shoes product title',
   price: 120,
@@ -14,7 +15,7 @@ export const singleProduct = {
   ]
 };
 
-export const staticProductList = [
+export const staticProductList: IProductItem[] = [
   singleProduct,
   { ...singleProduct, id: 2 },
   { ...singleProduct, id: 3 },
