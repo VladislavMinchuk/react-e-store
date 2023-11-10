@@ -1,4 +1,4 @@
-import { productImagesArr } from ".";
+import { productImagesArr } from "../constans";
 import { IProductItem } from "../interfaces";
 
 export const singleProduct: IProductItem = {

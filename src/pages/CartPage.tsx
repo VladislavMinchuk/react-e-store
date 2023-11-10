@@ -2,9 +2,6 @@ import React from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components/CartItem";
 import { productImagesArr } from "../constans";
-import { useSelector } from "react-redux";
-import { addOne } from "../store/slices/count.slice";
-import { RootState, useAppDispatch } from "../store";
 
 // Statis list TODO: move to state, cretate interface for the list item
 const cartList = [
@@ -29,9 +26,6 @@ const cartList = [
 ];
 
 const CartPage:React.FC = () => {
-  const dispahtch = useAppDispatch();
-  const count = useSelector((state: RootState) => state.counter.count);
-
   const removeCartItem = ({ productId }: IRemoveHandlerArgs): void => {
     console.log(productId);
   };
@@ -42,8 +36,6 @@ const CartPage:React.FC = () => {
 
   return (
     <section className="cart-section py-5">
-      {count}
-      <button type="button" onClick={() => dispahtch(addOne())}>add one</button>
       <Container>
         <header className="d-flex align-items-center mb-3 mb-lg-5">
           <h2 className="mb-0 me-auto">Your cart</h2>

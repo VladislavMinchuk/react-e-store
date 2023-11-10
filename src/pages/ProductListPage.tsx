@@ -1,6 +1,6 @@
 import ProductListGrid from "../blocks/ProductsListGrid";
 import ProductFilters from "../components/ProductFilters";
-import { staticProductList } from "../constans/api";
+import { staticProductList } from "../mock-data";
 import ProductsLayout from "../layouts/ProductsLayout";
 
 const ProductListPage = () => {

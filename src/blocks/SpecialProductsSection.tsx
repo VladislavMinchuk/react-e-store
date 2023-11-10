@@ -1,6 +1,6 @@
 import { Col, Row } from "react-bootstrap";
 import ProductListGrid from "./ProductsListGrid";
-import { staticProductList } from "../constans/api";
+import { staticProductList } from "../mock-data";
 
 const SpecialProductsSection = () => {
   return (
