@@ -20,7 +20,7 @@ const ProductListPage = () => {
   return (
     <div>
       { isLoading && 'Loading ... ' }
-      { productList.length > 0 &&
+      { (!isLoading && productList.length > 0) &&
         <ProductsLayout
           title="Product list"
           aside={ <ProductFilters /> }

@@ -20,7 +20,7 @@ const HomePage = () => {
     <div className="home-page">
       { isLoading && 'Loading ... ' }
       {
-        productList.length > 0 && // TODO: upd solution based on multiply async requests
+        (!isLoading && productList.length > 0) && // TODO: upd solution based on multiply async requests
         <Container>
           <MainCarouselHolder></MainCarouselHolder>
           <SpecialProductsSection productList={productList}></SpecialProductsSection>

@@ -27,7 +27,7 @@ const ProductDetailsPage = () => {
       { isLoading && 'Loading ... ' }
 
       {
-        singleProduct && // Check singleProduct
+        (!isLoading && singleProduct) && // Check singleProduct
         <div className="single-product-page">
           <section className="single-product-page__main-section">
             {/* breadcrumbs navigation */}
