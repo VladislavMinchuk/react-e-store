@@ -1,7 +1,6 @@
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IProductItem } from '../../interfaces';
-import { singleProduct } from '../../mock-data';
-import { setGloablLoading } from './global.slice';
+import { getProductByID } from '../actions/product.action';
 
 interface IInitialState {
   singleProduct: IProductItem | null
@@ -12,23 +11,6 @@ const initialState: IInitialState = {
   singleProduct: null,
   error: null,
 };
-
-export const getProductByID = createAsyncThunk(
-  'getProductByID',
-  async (userId: number, { dispatch }) => {
-    // GET request
-    // const response = await productApi.fetchById(userId);
-    // return response.data
-    return new Promise((resolve: (value: any) => void, reject) => {
-      dispatch(setGloablLoading(true)); // Show page loader
-      
-      setTimeout(() => {
-        dispatch(setGloablLoading(false)); // Hide page loader
-        resolve(singleProduct);
-      }, 3000);
-    });
-  }
-)
 
 export const productDetailsSlice = createSlice({
   name: 'productDetails',

@@ -1,13 +1,12 @@
 // import ProductsLayout from "../layouts/ProductsLayout";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import ProductCarousel from "../components/ProductCarousel";
-import { productImagesArr } from "../constans";
-import ProductOrderQuickForm from "../components/ProductOrderQuickForm.";
 import { useSelector } from "react-redux";
+import ProductCarousel from "../components/ProductCarousel";
+import ProductOrderQuickForm from "../components/ProductOrderQuickForm.";
 import { useAppDispatch, RootState } from "../store";
-import { getProductByID } from "../store/slices/product.slice";
-import { useEffect } from "react";
+import { getProductByID } from "../store/actions/product.action";
 
 
 const ProductDetailsPage = () => {
@@ -25,12 +24,11 @@ const ProductDetailsPage = () => {
 
   return (
     <div className="container py-4">
-      {JSON.stringify(singleProduct)}
+      { isLoading && 'Loading ... ' }
 
-      
-      <div className="single-product-page">
-        {
-          singleProduct && // Check singleProduct
+      {
+        singleProduct && // Check singleProduct
+        <div className="single-product-page">
           <section className="single-product-page__main-section">
             {/* breadcrumbs navigation */}
             <Row>
@@ -49,11 +47,11 @@ const ProductDetailsPage = () => {
               </Col>
             </Row>
           </section>
-        }
-        <section>
-          {/* Recomended section */}
-        </section>
-      </div>
+          <section>
+            {/* Recomended section */}
+          </section>
+        </div>
+      }      
     </div>
   )
 }

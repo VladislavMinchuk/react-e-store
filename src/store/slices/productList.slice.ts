@@ -1,28 +1,21 @@
-import { PayloadAction, createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IProductItem, IPaginationRequest } from '../../interfaces';
-import { staticProductList } from '../../mock-data';
+import { getProductList } from '../actions/productList.action';
 
-const initialState: {
+interface IInitialState {
   productList: IProductItem[] | [],
   error: any
-} = {
+};
+
+const initialState: IInitialState = {
   productList: [],
   error: null
 };
 
-const getProductList = createAsyncThunk(
-  'getProductList',
-  async (listParams: IPaginationRequest) => {
-    // GET request
-    // const response = await productApi.fetchById(userId);
-    // return response.data
-    return new Promise((resolve: (value: any) => void, reject) => {
-      setTimeout(() => {
-        resolve(staticProductList);
-      }, 3000);
-    });
-  }
-)
+export const defaultRequestParams: IPaginationRequest = {
+  page: 1,
+  perPage: 10
+};
 
 export const productListSlice = createSlice({
   name: 'productList',

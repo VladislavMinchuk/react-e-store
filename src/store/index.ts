@@ -1,16 +1,14 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import counterReducer from './slices/count.slice';
-import productDetailsReducer from './slices/product.slice';
-import productListReducer from './slices/productList.slice';
-import globalReducer from './slices/global.slice';
 import { useDispatch } from "react-redux";
+import productDetails from './slices/product.slice';
+import productList from './slices/productList.slice';
+import global from './slices/global.slice';
 
 const store = configureStore({
   reducer: combineReducers({
-    counter: counterReducer,
-    productDetails: productDetailsReducer,
-    productList: productListReducer,
-    global: globalReducer
+    productDetails,
+    productList,
+    global
   })
 });
 
