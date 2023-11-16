@@ -7,8 +7,6 @@ export const getProductList = createAsyncThunk(
   'getProductList',
   async (listParams: IPaginationRequest, { dispatch }) => {
     // GET request
-    // const response = await productApi.fetchById(userId);
-    // return response.data
     return new Promise((resolve: (value: any) => void, reject) => {
       dispatch(setGloablLoading(true)); // Show page loader
 

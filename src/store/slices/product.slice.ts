@@ -5,7 +5,7 @@ import { getProductByID } from '../actions/product.action';
 interface IInitialState {
   singleProduct: IProductItem | null
   error: any,
-}
+};
 
 const initialState: IInitialState = {
   singleProduct: null,

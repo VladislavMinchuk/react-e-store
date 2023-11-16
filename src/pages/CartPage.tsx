@@ -12,7 +12,6 @@ const cartList = [
     price: 120,
     size: '39',
     quantity: 2,
-    total: 240
   },
   {
     id: 2,
@@ -21,7 +20,6 @@ const cartList = [
     price: 80,
     size: '36',
     quantity: 1,
-    total: 80
   }
 ];
 

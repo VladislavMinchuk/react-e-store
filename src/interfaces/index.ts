@@ -23,7 +23,7 @@ export interface IProductCartItem {
 
 export interface ICartEntity {
   cartId: number,
-  products: IProductCartItem,
+  products: Array<IProductCartItem>,
   payment: IPaymentCartEntity
 };
 

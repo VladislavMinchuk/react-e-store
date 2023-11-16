@@ -1,5 +1,5 @@
 import { productImagesArr } from "../constans";
-import { IProductItem } from "../interfaces";
+import { ICartEntity, IProductItem } from "../interfaces";
 
 export const singleProduct: IProductItem = {
   id: 1,
@@ -24,3 +24,20 @@ export const staticProductList: IProductItem[] = [
   { ...singleProduct, id: 6 },
   { ...singleProduct, id: 7 },
 ];
+
+export const staticProductCartItem = {
+  id: 1,
+  title: 'Org snnnn',
+  productImage: productImagesArr[1],
+  price: 40,
+  quantity: 1,
+  size: '36'
+};
+
+export const staticCart: ICartEntity = {
+  cartId: 1,
+  products: [staticProductCartItem, staticProductCartItem],
+  payment: {
+    total: 120
+  }
+}

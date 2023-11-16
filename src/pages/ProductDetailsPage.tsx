@@ -20,7 +20,6 @@ const ProductDetailsPage = () => {
   }, []);
 
   // Show loader TODO: create global Lodaer component
-  if (isLoading) return (<p>loading ...</p>)
 
   return (
     <div className="container py-4">

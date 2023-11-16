@@ -1,26 +1,29 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { IProductCartItem, ICartEntity } from '../../interfaces';
+import { getUserCart } from '../actions/cart.action';
 
 const initialState: {
   userCart: ICartEntity | null,
+  error: any,
 } = {
   userCart: null,
+  error: null,
 };
 
-export const productSlice = createSlice({
+export const cartSlice = createSlice({
   name: 'cart',
   initialState,
-  reducers: {
-    // Adding product entity (IProductCartItem)
-    addCartItem: (state, action: PayloadAction<IProductCartItem>) => {
-      // POST request
-    },
-    // Should be removing by ID
-    removeCartItem: (state, action: PayloadAction<number>) => {
-      // DELETE request
-    },
-    getCart: (state, action: PayloadAction<number>) => {
-      // GET request
-    }
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(getUserCart.fulfilled, (state, action: PayloadAction<ICartEntity | null>) => {
+      // handle loading state as needed
+      state.userCart = action.payload;
+    });
+    builder.addCase(getUserCart.rejected, (state, action) => {
+      // handle loading state as needed
+      state.error = action.error.message;
+    });
   }
 });
+
+export default cartSlice.reducer;
