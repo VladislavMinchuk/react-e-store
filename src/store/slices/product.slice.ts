@@ -16,6 +16,7 @@ export const productDetailsSlice = createSlice({
   name: 'productDetails',
   initialState,
   reducers: {},
+  // Temp solution with extraReducers and the fake api requests
   extraReducers: (builder) => {
     builder.addCase(getProductByID.fulfilled, (state, action: PayloadAction<IProductItem | null>) => {
       // handle loading state as needed

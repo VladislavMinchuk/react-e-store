@@ -21,6 +21,7 @@ export const productListSlice = createSlice({
   name: 'productList',
   initialState,
   reducers: {},
+  // Temp solution with extraReducers and the fake api requests
   extraReducers: (builder) => {
     builder.addCase(getProductList.fulfilled, (state, action: PayloadAction<IProductItem[] | []>) => {
       // handle loading state as needed

@@ -19,7 +19,7 @@ export const getUserCart = createAsyncThunk(
 );
 
 export const addCartItem = createAsyncThunk(
-  'getUserCart',
+  'addCartItem',
   async (cartItem: IProductCartItem, { dispatch }) => {
     // GET request
     return new Promise((resolve: (value: any) => void, reject) => {
@@ -34,7 +34,7 @@ export const addCartItem = createAsyncThunk(
 );
 
 export const removeCartItem = createAsyncThunk(
-  'getUserCart',
+  'removeCartItem',
   async (productId: number, { dispatch }) => {
     // GET request
     return new Promise((resolve: (value: any) => void, reject) => {
