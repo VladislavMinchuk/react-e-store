@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { Row, Col } from "react-bootstrap";
-import ProductCard from "../components/ProductCard";
+import ProductContainer from "../components/ProductCardContainer";
+import { IProductItem } from "../interfaces";
 
-// TODO: replace types based on interfaces
 export type ProductListGridProps = {
-  productList: Array<{}>,
+  productList: Array<IProductItem>,
   xs?: number,
   md?: number,
   lg?: number,
@@ -20,7 +20,7 @@ const ProductListGrid:FC<ProductListGridProps> = ({
       { productList.map((productItem, idx) => {
         return (
           <Col key={idx} xs={xs} md={md} lg={lg} xl={xl} xxl={xxl} className="mb-3 mb-lg-4">
-            <ProductCard></ProductCard>
+            <ProductContainer productItem={productItem}></ProductContainer>
           </Col>
         );
       }) }

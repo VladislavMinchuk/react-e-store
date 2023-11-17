@@ -1,15 +1,25 @@
 import React, { useRef, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { productImagesArr } from "../constans";
 import CardPreviewCarousel from "./CardPreviewCarousel";
+import { IProductItem } from "../interfaces";
 import '../assets/styles/components/ProductCard.scss';
 
-export type ProductCardProps = {
-  cardWidth?: string
-}
+export type ProductCardProps = IProductItem & {
+  cardWidth?: string,
+  addToCartItem?: (productId: number) => void
+};
 
-const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
+const ProductCard:React.FC<ProductCardProps> = ({
+  cardWidth = 'auto',
+  addToCartItem,
+  id,
+  title,
+  price,
+  images,
+  shoesSize,
+  description
+}) => {
   const [cardHeight, setCardHeight] = useState('auto');
   const [activeCard, setActiveCard] = useState('');
 
@@ -36,22 +46,24 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
       <div className="product-card__content-wrap">
         <div className="card-img-wrap">
           {/* Favorite  icon */}
-          <CardPreviewCarousel imagesArray={productImagesArr}></CardPreviewCarousel>
+          <CardPreviewCarousel imagesArray={images}></CardPreviewCarousel>
           {/* Price info */}
         </div>
-        {/* Slick should be here */}
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
+          <Card.Title>{ title }</Card.Title>
           <Card.Text>
             Colors: 3
           </Card.Text>
           {/* TODO: move action buttons to the img wrapper */}
           <div className="d-flex justify-content-between">
-            {/* static router ID */}
-            <Link to="/product/1" className="link-light btn btn-primary text-center">
+            <Link to={`/product/${id}`} className="link-light btn btn-primary text-center">
               View
             </Link>
-            <Button variant="secondary" className="text-white">Add to cart</Button>
+            <Button
+              variant="secondary"
+              className="text-white"
+              onClick={() => addToCartItem && addToCartItem(id)}
+            >Add to cart</Button>
           </div>
         </Card.Body>
       </div>
