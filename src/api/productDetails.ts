@@ -13,7 +13,11 @@ export const productDetailsApi = createApi({
           console.log(response, body);
           return true;
         },
+
       }),
+
+
+     
       // transformResponse(res) {},
       // transformErrorResponse(errorObj, meta, productId) {},
     }),

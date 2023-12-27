@@ -12,7 +12,7 @@ export const getProductByID = createAsyncThunk(
       setTimeout(() => {
         dispatch(setGloablLoading(false)); // Hide page loader
         resolve(singleProduct);
-      }, 3000);
+      }, 1000);
     });
   }
 );

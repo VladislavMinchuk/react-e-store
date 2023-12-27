@@ -13,7 +13,7 @@ export const getProductList = createAsyncThunk(
       setTimeout(() => {
         dispatch(setGloablLoading(false)); // Hide page loader
         resolve(staticProductList);
-      }, 3000);
+      }, 1000);
     });
   }
 );

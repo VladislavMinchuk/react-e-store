@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export interface IGlobalSliceInitialState {
+export interface IGlobalSlice {
   isLoading: boolean;
 }
 
-export const initialState: IGlobalSliceInitialState = {
+export const initialState: IGlobalSlice = {
   isLoading: false,
 };
 

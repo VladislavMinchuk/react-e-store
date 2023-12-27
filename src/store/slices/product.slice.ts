@@ -1,19 +1,19 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IProductItem } from '../../interfaces';
-import { getProductByID } from '../actions/product.action';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { IProductItem } from "../../interfaces";
+import { getProductByID } from "../actions/product.action";
 
-interface IInitialState {
-  singleProduct: IProductItem | null
-  error: any,
-};
+export interface IProductDetailsSlice {
+  singleProduct: IProductItem | null;
+  error: any;
+}
 
-const initialState: IInitialState = {
+const initialState: IProductDetailsSlice = {
   singleProduct: null,
   error: null,
 };
 
 export const productDetailsSlice = createSlice({
-  name: 'productDetails',
+  name: "productDetails",
   initialState,
   reducers: {},
   // Temp solution with extraReducers and the fake api requests
@@ -26,7 +26,7 @@ export const productDetailsSlice = createSlice({
       // handle loading state as needed
       state.error = action.error.message;
     });
-  }
+  },
 });
 
 export default productDetailsSlice.reducer;
