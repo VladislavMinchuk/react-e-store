@@ -1,29 +1,39 @@
 import React, { useRef, useState } from "react";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { productImagesArr } from "../constans";
 import CardPreviewCarousel from "./CardPreviewCarousel";
-import '../assets/styles/components/ProductCard.scss';
+import { IProductItem } from "../interfaces";
+import "../assets/styles/components/ProductCard.scss";
 
-export type ProductCardProps = {
-  cardWidth?: string
-}
+export type ProductCardProps = IProductItem & {
+  cardWidth?: string;
+  addToCartItem?: (productId: number) => void;
+};
 
-const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
-  const [cardHeight, setCardHeight] = useState('auto');
-  const [activeCard, setActiveCard] = useState('');
+const ProductCard: React.FC<ProductCardProps> = ({
+  cardWidth = "auto",
+  addToCartItem,
+  id,
+  title,
+  price,
+  images,
+  shoesSize,
+  description,
+}) => {
+  const [cardHeight, setCardHeight] = useState("auto");
+  const [activeCard, setActiveCard] = useState("");
 
   const cardRef = useRef<HTMLDivElement>(null);
 
   const mouseEnterHandler = () => {
     setCardHeight(`${cardRef?.current?.offsetHeight}px`);
-    setActiveCard('isActive');
-  }
-  
+    setActiveCard("isActive");
+  };
+
   const mouseLeaveHandler = () => {
-    setCardHeight('auto');
-    setActiveCard('');
-  }
+    setCardHeight("auto");
+    setActiveCard("");
+  };
 
   return (
     <Card
@@ -36,27 +46,28 @@ const ProductCard:React.FC<ProductCardProps> = ({ cardWidth = 'auto' }) => {
       <div className="product-card__content-wrap">
         <div className="card-img-wrap">
           {/* Favorite  icon */}
-          <CardPreviewCarousel imagesArray={productImagesArr}></CardPreviewCarousel>
+          <CardPreviewCarousel imagesArray={images}></CardPreviewCarousel>
           {/* Price info */}
         </div>
-        {/* Slick should be here */}
         <Card.Body>
-          <Card.Title>Card Title</Card.Title>
-          <Card.Text>
-            Colors: 3
-          </Card.Text>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text> Colors: 3 </Card.Text>
+          <Card.Text> Price: {price}$ </Card.Text>
           {/* TODO: move action buttons to the img wrapper */}
           <div className="d-flex justify-content-between">
-            {/* static router ID */}
-            <Link to="/product/1" className="link-light btn btn-primary text-center">
+            <Link to={`/product/${id}`} className="link-light btn btn-primary text-center">
               View
             </Link>
-            <Button variant="secondary" className="text-white">Add to cart</Button>
+            <Button variant="secondary" className="text-white" onClick={() => addToCartItem && addToCartItem(id)}>
+              Add to cart
+            </Button>
           </div>
         </Card.Body>
       </div>
     </Card>
-  )
-}
+  );
+};
 
 export default ProductCard;
+// ? чому ми передаємо id в addToCartItem, якщо экшен addCartItem чекаэ на обжект?
+//
