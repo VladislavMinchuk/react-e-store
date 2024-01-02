@@ -12,24 +12,26 @@ const ProductListPage = () => {
   const dispahtch = useAppDispatch();
   const isLoading = useTypedSelector((state) => state.global.isLoading);
   const productList = useTypedSelector((state) => state.productList.productList);
-  const productListToRender = useTypedSelector((state) => state.productFilters.filteredProductList);
+  const { filteredProductList } = useTypedSelector((state) => state.productFilters);
+  
 
   useEffect(() => {
+    console.log(filteredProductList);
     dispahtch(getProductList(defaultRequestParams)); // Get product list by pagination params
- 
+    
   }, []);
 
   return (
     <div>
       {isLoading && <Loader positionValue="position-fixed" />}
       {/* TODO: create message component */}
-      {!productListToRender.length && !isLoading && <div className="text-center">filter is too strict</div>}
+      {!filteredProductList.length && !isLoading && <div className="text-center">filter is too strict</div>}
 
       {productList.length > 0 && (
         <ProductsLayout
           title="Product list"
           aside={<ProductFilters />}
-          mainContent={<ProductListGrid productList={productListToRender} />}
+          mainContent={<ProductListGrid productList={filteredProductList} />}
         />
       )}
     </div>

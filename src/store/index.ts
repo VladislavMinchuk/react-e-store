@@ -4,8 +4,10 @@ import productDetails, { IProductDetailsSlice } from "./slices/product.slice";
 import productList, { IProductListSlice } from "./slices/productList.slice";
 import global, { IGlobalSlice } from "./slices/global.slice";
 import cartSlice, { ICartSlice } from "./slices/cart.slice";
-import productFilters, { IProductFilters } from "./slices/filter";
+
 import { productDetailsApi } from "../api"; // Doesn't work without API
+import { IProductFilters } from "./slices/productFilters/model";
+import productFilters from "./slices/productFilters";
 
 export interface RootState {
   productDetails: IProductDetailsSlice;

@@ -1,6 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { staticProductList } from "../../../mock-data";
-
 import { IProductFilters, filterOptionsDefault, productSortTypes } from "./model";
 
 const initialState: IProductFilters = {
@@ -10,7 +9,8 @@ const initialState: IProductFilters = {
 };
 
 export const productFiltersSlice = createSlice({
-  name: "productFiltersSlice",
+  name: "productFilters",
+  initialState,
   reducers: {
     setPriceFilter(state, action: PayloadAction<{ min: number; max: number }>) {
       state.filterOptions.price = action.payload;
@@ -57,7 +57,6 @@ export const productFiltersSlice = createSlice({
       state.filterOptions = filterOptionsDefault;
     },
   },
-  initialState,
 });
 
 export const {

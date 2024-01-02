@@ -7,18 +7,18 @@ import {
   sortByTypeAction,
   filterByPriceAction,
   filterBySizeAction,
-} from "../store/slices/filter";
+} from "../store/slices/productFilters";
 import { setGloablLoading } from "../store/slices/global.slice";
 import Form from "react-bootstrap/Form";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { singleProduct } from "../mock-data";
-import { productSortTypes } from "../store/slices/filter/model";
+import { productSortTypes } from "../store/slices/productFilters/model";
 
 export type ProductFiltersProps = {};
 
 const ProductFilters: FC<ProductFiltersProps> = () => {
   const dispatch = useAppDispatch();
-  const { chosenFilters } = useTypedSelector((state) => state.productFilters);
+  const {filterOptions} = useTypedSelector((state) => state.productFilters);
   const [activeButton, setActiveButton] = useState<boolean>(false);
   const [maxPrice, setMaxPrice] = useState<number>(100);
   const [minPrice, setMinPrice] = useState<number>(1);
@@ -42,7 +42,7 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
   };
 
   const aplyFilters = () => {
-    console.log(chosenFilters);
+    console.log(filterOptions);
     setActiveButton(false);
     dispatch(setGloablLoading(true));
     setTimeout(() => dispatch(setGloablLoading(false)), 300);
@@ -93,7 +93,7 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
           <Form.Label>Sizes:</Form.Label>
           {singleProduct.shoesSize.map(({ size }, i) => (
             <Form.Check
-              checked={chosenFilters.sizes.includes(size)}
+              checked={filterOptions.sizes.includes(size)}
               onChange={(e) => handleUpdateCheckBox(e)}
               value={size}
               key={i}
