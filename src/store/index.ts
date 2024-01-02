@@ -4,6 +4,7 @@ import productDetails, { IProductDetailsSlice } from "./slices/product.slice";
 import productList, { IProductListSlice } from "./slices/productList.slice";
 import global, { IGlobalSlice } from "./slices/global.slice";
 import cartSlice, { ICartSlice } from "./slices/cart.slice";
+import productFilters, { IProductFilters } from "./slices/filter";
 import { productDetailsApi } from "../api"; // Doesn't work without API
 
 export interface RootState {
@@ -11,6 +12,7 @@ export interface RootState {
   productList: IProductListSlice;
   global: IGlobalSlice;
   cartSlice: ICartSlice;
+  productFilters: IProductFilters;
   [productDetailsApi.reducerPath]: ReturnType<typeof productDetailsApi.reducer>;
 }
 
@@ -20,6 +22,7 @@ const store = configureStore({
     productList,
     global,
     cartSlice,
+    productFilters,
     [productDetailsApi.reducerPath]: productDetailsApi.reducer, // Doesn't work without API
   }),
   middleware: (getDefM) => getDefM().concat(productDetailsApi.middleware),
