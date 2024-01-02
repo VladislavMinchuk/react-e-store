@@ -136,3 +136,15 @@ export default productListSlice.reducer;
 // ???
 // ???
 //  
+
+/*
+  TODO: update filters
+
+  API FLOW
+    - 'filtersObj' { size, color, seasons ... }
+    - available sizes/colors/seasons gets from API ex: sizes - [{ id: 1, name: '36' }]
+    - render filters UI based on 'filtersObj'
+    - updated filters UI > updated 'filtersObj'
+    - single function for request to API with the 'filtersObj' 
+        REQ obj: { sizes_ids: [1,3,4 ...], colors_ids: [5,3...] } IDs only
+*/ 
