@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components/CartItem";
 import {  useAppDispatch, useTypedSelector } from "../store";
-import { removeCartItem as removeCartItemAction, updateItemQuantity } from "../store/actions/cart.action";
+import { removeCartItem as removeCartItemAction, updateItemQuantity, getUserCart } from "../store/actions/cart.action";
 import { IProductCartItem } from "../interfaces";
 import { calculateTotalPayment } from "../store/slices/cart.slice";
 import Loader from "../components/Loader";
@@ -51,6 +51,15 @@ const CartPage: React.FC = () => {
     dispatch(calculateTotalPayment());
   }, [userCart]);
 
+  // TODO: remove 
+  useEffect(() => {
+    dispatch(getUserCart(1)).then(() => {
+      console.log(userCart);
+
+    });
+    
+  }, []);
+
   return (
     <section className="cart-section py-5">
       <Container>
@@ -62,9 +71,9 @@ const CartPage: React.FC = () => {
             <Button variant="info" className="cart-section__order-btn w-100 mb-3">
               Continue order
             </Button>
-            <p>
+            <div>
               <strong>Total:</strong> {userCart?.payment.total} ${isLoading && <Loader positionValue="static" />}
-            </p>
+            </div>
           </Col>
           <Col xs={12} lg={10} xl={9} className="order-lg-1">
             <ul>

@@ -51,9 +51,9 @@ export const staticProductCartItem1 = {
   size: "36",
 };
 export const staticCart: ICartEntity = {
-  cartId: 1,
-  products: [staticProductCartItem, staticProductCartItem1],
+  cartId: 99,
+  products: [],
   payment: {
-    total: 120,
+    total: 0,
   },
 };

@@ -2,14 +2,15 @@ import {  createAsyncThunk } from "@reduxjs/toolkit";
 import { setGloablLoading } from "../slices/global.slice";
 import { ICartEntity, IProductCartItem } from "../../interfaces";
 import { IUpdateQuantityArgs } from "../../components/CartItem";
+import { staticCart } from "../../mock-data";
 
-export const getUserCart = createAsyncThunk("getUserCart", async (userCart: ICartEntity, { dispatch }) => {
-  // GET request
+export const getUserCart = createAsyncThunk("getUserCart", async (userId: number, { dispatch }) => {
+  // GET request (get user cart by userID)
   return new Promise((resolve: (value: any) => void, reject) => {
     dispatch(setGloablLoading(true)); // Show page loader
     setTimeout(() => {
       dispatch(setGloablLoading(false)); // Hide page loader
-      resolve(userCart);
+      resolve(staticCart); // return static cart object
     }, 500);
   });
 });
