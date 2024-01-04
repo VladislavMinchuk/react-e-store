@@ -36,6 +36,7 @@ const InputCounter:React.FC<InputCounterProps> = ({
     let resultValue: number | string = event.target.value.replace(numberPattern, '');
     const calculatedValue = calculateQuantity(resultValue);
     updateQuantity(calculatedValue);
+    
   }
   
   const incrementHandler = () => {

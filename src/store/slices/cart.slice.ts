@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice, current } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IProductCartItem, ICartEntity } from "../../interfaces";
 import { addCartItem, getUserCart, removeCartItem, updateItemQuantity } from "../actions/cart.action";
 import { IUpdateQuantityArgs } from "../../components/CartItem";
@@ -17,13 +17,18 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    calculateTotalPayment: (state) => {
+    updateTotalPayment: (state) => {
       if (state.userCart) {
         state.userCart.payment.total = (state.userCart?.products || []).reduce(
           (acc, cur) => acc + cur.price * Number(cur.quantity),
           0
         );
       }
+    },
+    // SOMNITELNO but OKEY???
+    getSumOfCartItems: (state, action) => {
+      const itemPrice = action.payload;
+      return state.userCart?.products.reduce((acc, cur) => acc + cur.price, itemPrice);
     },
   },
 
@@ -40,21 +45,17 @@ export const cartSlice = createSlice({
     // Add new ProductCartItem
     builder.addCase(addCartItem.fulfilled, (state, action: PayloadAction<IProductCartItem>) => {
       const { payload: newCartItem } = action;
-
       const hasItem = state.userCart?.products.find((p: IProductCartItem) => p.id === newCartItem.id);
-      if (hasItem) {
-        console.log("product already in cart");
-
-        return state; // Return the same state if item already exist
-      }
+      if (hasItem) return state; // Return the same state if item already exist
       // Add new item
+
+      const sumOfProducts = cartSlice.caseReducers.getSumOfCartItems(state, { payload: newCartItem.price, type: "" });
       const mockCart = {
         cartId: Date.now(),
-        products: state.userCart ? [...state.userCart.products] : [],
-        payment: { total: state.userCart?.products.reduce((acc, cur) => acc + cur.price, newCartItem.price)! },
+        products: state.userCart ? [...state.userCart.products, newCartItem] : [newCartItem],
+        payment: { total: sumOfProducts },
       };
       state.userCart = mockCart;
-      state.userCart.products.push(newCartItem);
     });
     builder.addCase(removeCartItem.fulfilled, (state, action: PayloadAction<number>) => {
       if (!state.userCart?.products) return;
@@ -70,5 +71,5 @@ export const cartSlice = createSlice({
     });
   },
 });
-export const { calculateTotalPayment } = cartSlice.actions;
+export const { updateTotalPayment } = cartSlice.actions;
 export default cartSlice.reducer;

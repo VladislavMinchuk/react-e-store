@@ -1,103 +1,139 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../store";
 import {
-  filterProductsByPrice,
-  filterProductsBySize,
-  sortProductsByType,
-  updateChosenSizes,
-} from "../store/slices/productList.slice";
-import { setGloablLoading } from "../store/slices/global.slice";
+  setSizeFilter,
+  setPriceFilter,
+  setSortType,
+  sortByTypeAction,
+  filterByPriceAction,
+  filterBySizeAction,
+  resetFiltersAction,
+} from "../store/slices/productFilters";
+import { setGloablLoading, setRenderCondition } from "../store/slices/global.slice";
 import Form from "react-bootstrap/Form";
-import { Col, Container } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { singleProduct } from "../mock-data";
+import { productSortTypes } from "../store/slices/productFilters/model";
 
-const selectSortOptions = [
-  { type: "low_First", name: "low price first" },
-  { type: "high_First", name: "high price first" },
-];
 export type ProductFiltersProps = {};
 
 const ProductFilters: FC<ProductFiltersProps> = () => {
-  const filter = useTypedSelector((state) => state.productList.productFilters);
-  const [maxPrice, setMaxPrice] = useState<number>(filter.price.max);
   const dispatch = useAppDispatch();
+  const { filterOptions } = useTypedSelector((state) => state.productFilters);
+  const { isLoading, isFirstRender } = useTypedSelector((state) => state.global);
+  const [activeButton, setActiveButton] = useState<{ applyBtn: boolean; resetBtn: boolean }>({
+    applyBtn: false,
+    resetBtn: false,
+  });
+  const [maxPrice, setMaxPrice] = useState<number>(100);
+  const [minPrice, setMinPrice] = useState<number>(1);
 
-  const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(sortProductsByType(e.target.value));
+  const handlePriceUpdate = (e: ChangeEvent<HTMLInputElement>) => {
+    const valueMax = Number(e.target.value);
+    setMaxPrice(valueMax);
+    // setMinPrice(value)
   };
-  const handleChandeMaxPrice = (e: ChangeEvent<HTMLInputElement>) => {
-    const currMaxPriceValue = Number(e.target.value);
-    if (currMaxPriceValue < 1) return;
-    setMaxPrice(currMaxPriceValue);
-  };
-  const handleMouseUp = () => {
-    dispatch(setGloablLoading(true));
-
-    setTimeout(() => {
-      dispatch(filterProductsByPrice(maxPrice));
-      dispatch(setGloablLoading(false));
-    }, 500);
+  const handleSliderMouseUp = () => {
+    dispatch(setPriceFilter({ max: maxPrice, min: minPrice }));
   };
   const handleUpdateCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateChosenSizes(e.target.value));
+    dispatch(setSizeFilter({ size: e.target.value, checked: e.target.checked }));
+  };
+  const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setSortType(e.target.value as productSortTypes));
+  };
+
+  const aplyFilters = () => {
+    dispatch(setGloablLoading(true));
+    setTimeout(() => {
+      dispatch(filterByPriceAction());
+      dispatch(filterBySizeAction());
+      dispatch(sortByTypeAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+    setActiveButton({ resetBtn: true, applyBtn: false });
+  };
+  
+  const resetFilters = () => {
+    dispatch(setGloablLoading(true));
+    setTimeout(() => {
+      dispatch(resetFiltersAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+    setActiveButton({ ...activeButton, resetBtn: false });
   };
 
   useEffect(() => {
-    // console.log(filter.sizes.chosen);
-    // console.log(filter.sizes.available);
-    dispatch(filterProductsBySize());
-  }, [filter.sizes.chosen]);
+    if (isFirstRender) {
+      dispatch(setRenderCondition(false));
+      return;
+    }
+    setActiveButton({ ...activeButton, applyBtn: true });
+  }, [filterOptions]);
 
   return (
-    <Col>
-      <p>Product filters</p>
+    <Row>
+      <Col>
+        <p>Product filters</p>
 
-      <hr />
+        <hr />
 
-      <Container>
-        <Form.Label>Max price:</Form.Label>
-        <Form.Range
-          min={filter.price.min}
-          max={filter.price.max}
-          className="w-100"
-          value={maxPrice}
-          onChange={(e) => handleChandeMaxPrice(e)}
-          onMouseUp={handleMouseUp}
-        />
-        <div>{maxPrice}$</div>
-      </Container>
+        <Container>
+          <Form.Label>Max price:</Form.Label>
+          <Form.Range
+            min={1}
+            max={100}
+            className="w-100"
+            value={maxPrice}
+            onChange={(e) => handlePriceUpdate(e)}
+            onMouseUp={handleSliderMouseUp}
+          />
+          <div>{maxPrice}$</div>
+        </Container>
 
-      <hr />
+        <hr />
 
-      <Container>
-        <Form.Label>Sort products by:</Form.Label>
-        <Form.Select defaultValue="Chose option" onChange={(e) => handleChangeSort(e)}>
-          <option value={"Chose option"} disabled>
-            Chose option
-          </option>
-          {selectSortOptions.map((o) => (
-            <option value={o.type} key={o.type}>
-              {o.name}
+        <Container>
+          <Form.Label>Sort products by:</Form.Label>
+          <Form.Select defaultValue="Chose option" onChange={(e) => handleChangeSort(e)}>
+            <option value={"Chose option"} disabled>
+              Chose option
             </option>
+            {Object.values(productSortTypes).map((option) => (
+              <option value={option} key={option}>
+                {option}
+              </option>
+            ))}
+          </Form.Select>
+        </Container>
+
+        <hr />
+
+        <Container>
+          <Form.Label>Sizes:</Form.Label>
+          {singleProduct.shoesSize.map(({ size }, i) => (
+            <Form.Check
+              checked={filterOptions.sizes.includes(size)}
+              onChange={(e) => handleUpdateCheckBox(e)}
+              value={size}
+              key={i}
+              id={size}
+              label={size}
+            ></Form.Check>
           ))}
-        </Form.Select>
-      </Container>
+        </Container>
 
-      <hr />
-
-      <Container>
-        <Form.Label>Sizes:</Form.Label>
-        {filter.sizes.available.map((s, i) => (
-          <Form.Check
-            checked={filter.sizes.chosen.includes(s)}
-            onChange={(e) => handleUpdateCheckBox(e)}
-            value={s}
-            key={i}
-            id={s}
-            label={s}
-          ></Form.Check>
-        ))}
-      </Container>
-    </Col>
+        <hr />
+        <Container className="d-flex flex-column gap-3">
+          <Button disabled={!activeButton.applyBtn || isLoading} onClick={aplyFilters}>
+            Accept filters
+          </Button>
+          <Button disabled={!activeButton.resetBtn || isLoading} onClick={resetFilters}>
+            Reset filters
+          </Button>
+        </Container>
+      </Col>
+    </Row>
   );
 };
 
