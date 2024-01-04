@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../store";
 import {
   setSizeFilter,
@@ -7,8 +7,9 @@ import {
   sortByTypeAction,
   filterByPriceAction,
   filterBySizeAction,
+  resetFiltersAction,
 } from "../store/slices/productFilters";
-import { setGloablLoading } from "../store/slices/global.slice";
+import { setGloablLoading, setRenderCondition } from "../store/slices/global.slice";
 import Form from "react-bootstrap/Form";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { singleProduct } from "../mock-data";
@@ -18,8 +19,12 @@ export type ProductFiltersProps = {};
 
 const ProductFilters: FC<ProductFiltersProps> = () => {
   const dispatch = useAppDispatch();
-  const {filterOptions} = useTypedSelector((state) => state.productFilters);
-  const [activeButton, setActiveButton] = useState<boolean>(false);
+  const { filterOptions } = useTypedSelector((state) => state.productFilters);
+  const { isLoading, isFirstRender } = useTypedSelector((state) => state.global);
+  const [activeButton, setActiveButton] = useState<{ applyBtn: boolean; resetBtn: boolean }>({
+    applyBtn: false,
+    resetBtn: false,
+  });
   const [maxPrice, setMaxPrice] = useState<number>(100);
   const [minPrice, setMinPrice] = useState<number>(1);
 
@@ -27,29 +32,44 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
     const valueMax = Number(e.target.value);
     setMaxPrice(valueMax);
     // setMinPrice(value)
-    setActiveButton(true);
   };
   const handleSliderMouseUp = () => {
     dispatch(setPriceFilter({ max: maxPrice, min: minPrice }));
   };
   const handleUpdateCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(setSizeFilter(e.target.value));
-    setActiveButton(true);
+    dispatch(setSizeFilter({ size: e.target.value, checked: e.target.checked }));
   };
   const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSortType(e.target.value as productSortTypes));
-    setActiveButton(true);
   };
 
   const aplyFilters = () => {
-    console.log(filterOptions);
-    setActiveButton(false);
     dispatch(setGloablLoading(true));
-    setTimeout(() => dispatch(setGloablLoading(false)), 300);
-    dispatch(filterByPriceAction());
-    dispatch(filterBySizeAction());
-    dispatch(sortByTypeAction());
+    setTimeout(() => {
+      dispatch(filterByPriceAction());
+      dispatch(filterBySizeAction());
+      dispatch(sortByTypeAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+    setActiveButton({ resetBtn: true, applyBtn: false });
   };
+  
+  const resetFilters = () => {
+    dispatch(setGloablLoading(true));
+    setTimeout(() => {
+      dispatch(resetFiltersAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+    setActiveButton({ ...activeButton, resetBtn: false });
+  };
+
+  useEffect(() => {
+    if (isFirstRender) {
+      dispatch(setRenderCondition(false));
+      return;
+    }
+    setActiveButton({ ...activeButton, applyBtn: true });
+  }, [filterOptions]);
 
   return (
     <Row>
@@ -105,10 +125,12 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
 
         <hr />
         <Container className="d-flex flex-column gap-3">
-          <Button disabled={!activeButton} onClick={aplyFilters}>
+          <Button disabled={!activeButton.applyBtn || isLoading} onClick={aplyFilters}>
             Accept filters
           </Button>
-          <Button disabled>Reset filters</Button>
+          <Button disabled={!activeButton.resetBtn || isLoading} onClick={resetFilters}>
+            Reset filters
+          </Button>
         </Container>
       </Col>
     </Row>

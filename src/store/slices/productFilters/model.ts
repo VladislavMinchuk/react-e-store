@@ -14,7 +14,7 @@ export enum productSortTypes {
 }
 
 interface IFilterOptions {
-  sortTypes: productSortTypes;
+  sortTypes: productSortTypes | null;
   sizes: string[];
   price: { min: number; max: number };
   discount: number | null;
@@ -22,7 +22,7 @@ interface IFilterOptions {
 }
 
 export const filterOptionsDefault = {
-  sortTypes: productSortTypes.HIGH_FIRST,
+  sortTypes: null,
   price: {
     min: 1,
     max: 100,

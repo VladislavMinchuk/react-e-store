@@ -7,20 +7,26 @@ const initialState: IProductFilters = {
   referenceProductList: staticProductList,
   filterOptions: filterOptionsDefault,
 };
+interface SizeFilterPayload {
+  size: string;
+  checked: boolean;
+}
+interface PriceFilterPayload {
+  min: number;
+  max: number;
+}
 
 export const productFiltersSlice = createSlice({
   name: "productFilters",
   initialState,
   reducers: {
-    setPriceFilter(state, action: PayloadAction<{ min: number; max: number }>) {
+    setPriceFilter(state, action: PayloadAction<PriceFilterPayload>) {
       state.filterOptions.price = action.payload;
     },
-    setSizeFilter(state, action: PayloadAction<string>) {
-      const newSize = action.payload;
+    setSizeFilter(state, action: PayloadAction<SizeFilterPayload>) {
+      const { size, checked } = action.payload;
       const sizeFilterArr = state.filterOptions.sizes;
-      state.filterOptions.sizes = sizeFilterArr.includes(newSize)
-        ? sizeFilterArr.filter((s) => s !== newSize)
-        : [...sizeFilterArr, newSize];
+      state.filterOptions.sizes = checked ? [...sizeFilterArr, size] : sizeFilterArr.filter((s) => s !== size);
     },
     setSortType(state, action: PayloadAction<productSortTypes>) {
       state.filterOptions.sortTypes = action.payload;
@@ -48,13 +54,14 @@ export const productFiltersSlice = createSlice({
     },
     filterBySizeAction(state) {
       const chosenSizes = state.filterOptions.sizes;
+
       state.filteredProductList = state.filteredProductList.filter((product) =>
         product.shoesSize.some((size) => chosenSizes.includes(size.size))
       );
     },
-
-    resetFilters(state) {
+    resetFiltersAction(state) {
       state.filterOptions = filterOptionsDefault;
+      state.filteredProductList = state.referenceProductList;
     },
   },
 });
@@ -63,7 +70,7 @@ export const {
   setPriceFilter,
   setSizeFilter,
   setSortType,
-  resetFilters,
+  resetFiltersAction,
   filterByPriceAction,
   filterBySizeAction,
   sortByTypeAction,
