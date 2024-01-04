@@ -37,7 +37,8 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
     //   sliderState[0] = 1;
     //   return;
     // }
-    // DONT WORK
+    // DONT WORK:
+    // ***specify slider lib logic
     setFilterPriceValue([min, max]);
   };
 
@@ -52,7 +53,6 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
   const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
     dispatch(setSortType(e.target.value as productSortTypes));
   };
-
   const aplyFilters = () => {
     dispatch(setGloablLoading(true));
     setTimeout(() => {
@@ -61,22 +61,31 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
       dispatch(sortByTypeAction());
       dispatch(setGloablLoading(false));
     }, 1000);
+    // make Apply btn disabled, and Reset btn active
     setActiveButton({ resetBtn: true, applyBtn: false });
   };
 
-  const resetFilters = async () => {
+  const resetFilters = () => {
     dispatch(setGloablLoading(true));
     setTimeout(() => {
       dispatch(resetFiltersAction());
       dispatch(setGloablLoading(false));
     }, 1000);
-    setActiveButton({ ...activeButton, resetBtn: false });
-    setFilterPriceValue([1, 100]);
-    // re-render slider with default values
+
+    // re-render slider with default pointers values
+    // just update state for re-render
     setResetSlider((prev) => prev + 1);
+
+    // set default visual values
+    setFilterPriceValue([1, 100]);
+
+    // set disabled buttons after reset filters
+    dispatch(setRenderCondition(true));
+    setActiveButton({ ...activeButton, resetBtn: false });
   };
 
   useEffect(() => {
+    // dont enable Apply BTN on 1-st render
     if (isFirstRender) {
       dispatch(setRenderCondition(false));
       return;
@@ -84,10 +93,11 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
     setActiveButton({ ...activeButton, applyBtn: true });
   }, [filterOptions]);
 
+ 
+
   return (
     <Row>
       <Col>
-
         <p>Product filters</p>
 
         <hr />
@@ -154,7 +164,6 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
             Reset filters
           </Button>
         </Container>
-
       </Col>
     </Row>
   );
