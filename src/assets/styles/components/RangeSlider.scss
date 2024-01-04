@@ -1,0 +1,19 @@
+.horizontal-slider {
+    height: 18px;
+}
+
+.range-thumb {
+    &:focus {
+        outline: none;
+    }
+
+    background: #0d6efd;
+    border-radius: 50%;
+    height: 17px;
+    width: 17px;
+}
+
+.range-track {
+    height: 100%;
+    background-color: #f8f9fa;
+}

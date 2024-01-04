@@ -1,3 +1,4 @@
+import ReactSlider from "react-slider";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../store";
 import {
@@ -14,6 +15,7 @@ import Form from "react-bootstrap/Form";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { singleProduct } from "../mock-data";
 import { productSortTypes } from "../store/slices/productFilters/model";
+import "../assets/styles/components/RangeSlider.scss";
 
 export type ProductFiltersProps = {};
 
@@ -25,16 +27,24 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
     applyBtn: false,
     resetBtn: false,
   });
-  const [maxPrice, setMaxPrice] = useState<number>(100);
-  const [minPrice, setMinPrice] = useState<number>(1);
+  const [filterPriceValue, setFilterPriceValue] = useState<number[]>([1, 100]);
+  const [resetSlider, setResetSlider] = useState<number>(1);
 
-  const handlePriceUpdate = (e: ChangeEvent<HTMLInputElement>) => {
-    const valueMax = Number(e.target.value);
-    setMaxPrice(valueMax);
-    // setMinPrice(value)
+  // update local state
+  const handleUpdateSliderValues = (sliderState: number[]) => {
+    const [min, max] = sliderState;
+    // if (min < 1) {
+    //   sliderState[0] = 1;
+    //   return;
+    // }
+    // DONT WORK
+    setFilterPriceValue([min, max]);
   };
-  const handleSliderMouseUp = () => {
-    dispatch(setPriceFilter({ max: maxPrice, min: minPrice }));
+
+  // global store actions
+  const handelUpdatePriceFilter = () => {
+    const [min, max] = filterPriceValue;
+    dispatch(setPriceFilter({ min, max }));
   };
   const handleUpdateCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
     dispatch(setSizeFilter({ size: e.target.value, checked: e.target.checked }));
@@ -53,14 +63,17 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
     }, 1000);
     setActiveButton({ resetBtn: true, applyBtn: false });
   };
-  
-  const resetFilters = () => {
+
+  const resetFilters = async () => {
     dispatch(setGloablLoading(true));
     setTimeout(() => {
       dispatch(resetFiltersAction());
       dispatch(setGloablLoading(false));
     }, 1000);
     setActiveButton({ ...activeButton, resetBtn: false });
+    setFilterPriceValue([1, 100]);
+    // re-render slider with default values
+    setResetSlider((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -74,21 +87,29 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
   return (
     <Row>
       <Col>
+
         <p>Product filters</p>
 
         <hr />
 
         <Container>
-          <Form.Label>Max price:</Form.Label>
-          <Form.Range
-            min={1}
-            max={100}
-            className="w-100"
-            value={maxPrice}
-            onChange={(e) => handlePriceUpdate(e)}
-            onMouseUp={handleSliderMouseUp}
-          />
-          <div>{maxPrice}$</div>
+          <ReactSlider
+            key={resetSlider}
+            onChange={(state) => handleUpdateSliderValues(state)}
+            onAfterChange={handelUpdatePriceFilter}
+            className="horizontal-slider"
+            thumbClassName="range-thumb"
+            trackClassName="range-track"
+            defaultValue={[1, 100]}
+            renderThumb={(props) => <div {...props}></div>}
+            pearling
+            minDistance={10}
+          ></ReactSlider>
+
+          <div className="d-flex justify-content-between">
+            <div>{filterPriceValue[0]}$</div>
+            <div>{filterPriceValue[1]}$</div>
+          </div>
         </Container>
 
         <hr />
@@ -124,6 +145,7 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
         </Container>
 
         <hr />
+
         <Container className="d-flex flex-column gap-3">
           <Button disabled={!activeButton.applyBtn || isLoading} onClick={aplyFilters}>
             Accept filters
@@ -132,6 +154,7 @@ const ProductFilters: FC<ProductFiltersProps> = () => {
             Reset filters
           </Button>
         </Container>
+
       </Col>
     </Row>
   );
