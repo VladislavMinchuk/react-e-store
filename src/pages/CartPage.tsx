@@ -10,6 +10,7 @@ import Loader from "../components/Loader";
 const CartPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const userCart = useTypedSelector((state) => state.cartSlice.userCart);
+  const userCartError = useTypedSelector((state) => state.cartSlice.error);
   const isLoading = useTypedSelector((state) => state.global.isLoading);
 
   const removeCartItem = ({ productId }: IRemoveHandlerArgs): void => {
@@ -24,14 +25,15 @@ const CartPage: React.FC = () => {
     dispatch(updateTotalPayment());
   }, [userCart]);
 
-  // TODO: remove 
-  useEffect(() => {
-    dispatch(getUserCart(1)).then(() => {
-      console.log(userCart);
-
-    });
-    
+  useEffect(() => { // TODO: move to <App> ?
+    dispatch(getUserCart(1))    
   }, []);
+
+  // TODO: create separete component or impl toast lib
+  if (userCartError) return (<p>
+      'Something went wrong ...'
+      {JSON.stringify(userCartError)}
+  </p>)
 
   return (
     <section className="cart-section py-5">

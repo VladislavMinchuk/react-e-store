@@ -7,9 +7,13 @@ export interface ICartSlice {
   userCart: ICartEntity | null;
   error: unknown | null;
 }
-
+// REMINDER: create adapter for products list
 const initialState: ICartSlice = {
-  userCart: null,
+  userCart: {
+    cartId: 9,
+    products: [],
+    payment: { total: 0 }
+  },
   error: null,
 };
 
@@ -43,19 +47,9 @@ export const cartSlice = createSlice({
       state.error = action.payload;
     });
     // Add new ProductCartItem
-    builder.addCase(addCartItem.fulfilled, (state, action: PayloadAction<IProductCartItem>) => {
+    builder.addCase(addCartItem.fulfilled, ({ userCart }, action: PayloadAction<IProductCartItem>) => {
       const { payload: newCartItem } = action;
-      const hasItem = state.userCart?.products.find((p: IProductCartItem) => p.id === newCartItem.id);
-      if (hasItem) return state; // Return the same state if item already exist
-      // Add new item
-
-      const sumOfProducts = cartSlice.caseReducers.getSumOfCartItems(state, { payload: newCartItem.price, type: "" });
-      const mockCart = {
-        cartId: Date.now(),
-        products: state.userCart ? [...state.userCart.products, newCartItem] : [newCartItem],
-        payment: { total: sumOfProducts },
-      };
-      state.userCart = mockCart;
+      userCart?.products.push(newCartItem);
     });
     builder.addCase(removeCartItem.fulfilled, (state, action: PayloadAction<number>) => {
       if (!state.userCart?.products) return;
@@ -72,4 +66,7 @@ export const cartSlice = createSlice({
   },
 });
 export const { updateTotalPayment } = cartSlice.actions;
+export const selectProductCartById = ({ userCart }: ICartSlice, id: number) =>
+  userCart?.products.find(p => p.id === id);
+
 export default cartSlice.reducer;
