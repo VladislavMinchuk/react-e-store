@@ -1,7 +1,7 @@
 import { productImagesArr } from "../constans";
-import { ICartEntity, IProductItem } from "../interfaces";
 
-const getRandomPrice = () => {
+import { ICartEntity, IProductItem } from "../interfaces";
+export const getRandomPrice = () => {
   const price = Math.floor(Math.random() * 101);
   return price < 1 ? 5 : price;
 };
@@ -18,7 +18,6 @@ export const singleProduct: IProductItem = {
     { size: "39", id: 4 },
   ],
 };
-
 export const staticProductList: IProductItem[] = [
   singleProduct,
   {
@@ -33,7 +32,6 @@ export const staticProductList: IProductItem[] = [
   { ...singleProduct, id: 6, price: getRandomPrice(), shoesSize: [{ size: "37", id: 3 }] },
   { ...singleProduct, id: 7, price: getRandomPrice(), shoesSize: [{ size: "39", id: 3 }] },
 ];
-
 export const staticProductCartItem = {
   id: 1,
   title: "Org snnnn",
