@@ -4,36 +4,9 @@ import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components
 import {  useAppDispatch, useTypedSelector } from "../store";
 import { removeCartItem as removeCartItemAction, updateItemQuantity, getUserCart } from "../store/actions/cart.action";
 import { IProductCartItem } from "../interfaces";
-import { calculateTotalPayment } from "../store/slices/cart.slice";
+import { updateTotalPayment } from "../store/slices/cart.slice";
 import Loader from "../components/Loader";
 
-// Statis list TODO: move to state, cretate interface for the list item
-
-// const cartList = [
-//   {
-//     id: 1,
-//     title: "Origin Shoes star",
-//     productImage: productImagesArr[0],
-//     price: 120,
-//     size: "39",
-//     quantity: 2,
-//   },
-//   {
-//     id: 2,
-//     title: "Origin Shoes star",
-//     productImage: productImagesArr[1],
-//     price: 80,
-//     size: "36",
-//     quantity: 1,
-//   },
-// ];
-// const cartEntity: ICartEntity = {
-//   cartId: 1,
-//   products: cartList,
-//   payment: {
-//     total: 0,
-//   },
-// };
 const CartPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const userCart = useTypedSelector((state) => state.cartSlice.userCart);
@@ -48,7 +21,7 @@ const CartPage: React.FC = () => {
   };
 
   useEffect(() => {
-    dispatch(calculateTotalPayment());
+    dispatch(updateTotalPayment());
   }, [userCart]);
 
   // TODO: remove 
@@ -66,6 +39,7 @@ const CartPage: React.FC = () => {
         <header className="d-flex align-items-center mb-3 mb-lg-5">
           <h2 className="mb-0 me-auto">Your cart</h2>
         </header>
+
         <Row>
           <Col xs={12} lg={2} xl={3} className="order-lg-2">
             <Button variant="info" className="cart-section__order-btn w-100 mb-3">

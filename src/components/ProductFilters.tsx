@@ -1,103 +1,171 @@
+import ReactSlider from "react-slider";
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useAppDispatch, useTypedSelector } from "../store";
 import {
-  filterProductsByPrice,
-  filterProductsBySize,
-  sortProductsByType,
-  updateChosenSizes,
-} from "../store/slices/productList.slice";
-import { setGloablLoading } from "../store/slices/global.slice";
+  setSizeFilter,
+  setPriceFilter,
+  setSortType,
+  sortByTypeAction,
+  filterByPriceAction,
+  filterBySizeAction,
+  resetFiltersAction,
+} from "../store/slices/productFilters";
+import { setGloablLoading, setRenderCondition } from "../store/slices/global.slice";
 import Form from "react-bootstrap/Form";
-import { Col, Container } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
+import { singleProduct } from "../mock-data";
+import { productSortTypes } from "../store/slices/productFilters/model";
+import "../assets/styles/components/RangeSlider.scss";
 
-const selectSortOptions = [
-  { type: "low_First", name: "low price first" },
-  { type: "high_First", name: "high price first" },
-];
 export type ProductFiltersProps = {};
 
 const ProductFilters: FC<ProductFiltersProps> = () => {
-  const filter = useTypedSelector((state) => state.productList.productFilters);
-  const [maxPrice, setMaxPrice] = useState<number>(filter.price.max);
   const dispatch = useAppDispatch();
+  const { filterOptions } = useTypedSelector((state) => state.productFilters);
+  const { isLoading, isFirstRender } = useTypedSelector((state) => state.global);
+  const [activeButton, setActiveButton] = useState<{ applyBtn: boolean; resetBtn: boolean }>({
+    applyBtn: false,
+    resetBtn: false,
+  });
+  const [filterPriceValue, setFilterPriceValue] = useState<number[]>([1, 100]);
+  const [resetSlider, setResetSlider] = useState<number>(1);
 
-  const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
-    dispatch(sortProductsByType(e.target.value));
+  // update local state
+  const handleUpdateSliderValues = (sliderState: number[]) => {
+    const [min, max] = sliderState;
+    // if (min < 1) {
+    //   sliderState[0] = 1;
+    //   return;
+    // }
+    // DONT WORK:
+    // ***specify slider lib logic
+    setFilterPriceValue([min, max]);
   };
-  const handleChandeMaxPrice = (e: ChangeEvent<HTMLInputElement>) => {
-    const currMaxPriceValue = Number(e.target.value);
-    if (currMaxPriceValue < 1) return;
-    setMaxPrice(currMaxPriceValue);
-  };
-  const handleMouseUp = () => {
-    dispatch(setGloablLoading(true));
 
-    setTimeout(() => {
-      dispatch(filterProductsByPrice(maxPrice));
-      dispatch(setGloablLoading(false));
-    }, 500);
+  // global store actions
+  const handelUpdatePriceFilter = () => {
+    const [min, max] = filterPriceValue;
+    dispatch(setPriceFilter({ min, max }));
   };
   const handleUpdateCheckBox = (e: ChangeEvent<HTMLInputElement>) => {
-    dispatch(updateChosenSizes(e.target.value));
+    dispatch(setSizeFilter({ size: e.target.value, checked: e.target.checked }));
+  };
+  const handleChangeSort = (e: ChangeEvent<HTMLSelectElement>) => {
+    dispatch(setSortType(e.target.value as productSortTypes));
+  };
+  const aplyFilters = () => {
+    dispatch(setGloablLoading(true));
+    setTimeout(() => {
+      dispatch(filterByPriceAction());
+      dispatch(filterBySizeAction());
+      dispatch(sortByTypeAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+    // make Apply btn disabled, and Reset btn active
+    setActiveButton({ resetBtn: true, applyBtn: false });
+  };
+
+  const resetFilters = () => {
+    dispatch(setGloablLoading(true));
+    setTimeout(() => {
+      dispatch(resetFiltersAction());
+      dispatch(setGloablLoading(false));
+    }, 1000);
+
+    // re-render slider with default pointers values
+    // just update state for re-render
+    setResetSlider((prev) => prev + 1);
+
+    // set default visual values
+    setFilterPriceValue([1, 100]);
+
+    // set disabled buttons after reset filters
+    dispatch(setRenderCondition(true));
+    setActiveButton({ ...activeButton, resetBtn: false });
   };
 
   useEffect(() => {
-    // console.log(filter.sizes.chosen);
-    // console.log(filter.sizes.available);
-    dispatch(filterProductsBySize());
-  }, [filter.sizes.chosen]);
+    // dont enable Apply BTN on 1-st render
+    if (isFirstRender) {
+      dispatch(setRenderCondition(false));
+      return;
+    }
+    setActiveButton({ ...activeButton, applyBtn: true });
+  }, [filterOptions]);
+
+ 
 
   return (
-    <Col>
-      <p>Product filters</p>
+    <Row>
+      <Col>
+        <p>Product filters</p>
 
-      <hr />
+        <hr />
 
-      <Container>
-        <Form.Label>Max price:</Form.Label>
-        <Form.Range
-          min={filter.price.min}
-          max={filter.price.max}
-          className="w-100"
-          value={maxPrice}
-          onChange={(e) => handleChandeMaxPrice(e)}
-          onMouseUp={handleMouseUp}
-        />
-        <div>{maxPrice}$</div>
-      </Container>
+        <Container>
+          <ReactSlider
+            key={resetSlider}
+            onChange={(state) => handleUpdateSliderValues(state)}
+            onAfterChange={handelUpdatePriceFilter}
+            className="horizontal-slider"
+            thumbClassName="range-thumb"
+            trackClassName="range-track"
+            defaultValue={[1, 100]}
+            renderThumb={(props) => <div {...props}></div>}
+            pearling
+            minDistance={10}
+          ></ReactSlider>
 
-      <hr />
+          <div className="d-flex justify-content-between">
+            <div>{filterPriceValue[0]}$</div>
+            <div>{filterPriceValue[1]}$</div>
+          </div>
+        </Container>
 
-      <Container>
-        <Form.Label>Sort products by:</Form.Label>
-        <Form.Select defaultValue="Chose option" onChange={(e) => handleChangeSort(e)}>
-          <option value={"Chose option"} disabled>
-            Chose option
-          </option>
-          {selectSortOptions.map((o) => (
-            <option value={o.type} key={o.type}>
-              {o.name}
+        <hr />
+
+        <Container>
+          <Form.Label>Sort products by:</Form.Label>
+          <Form.Select defaultValue="Chose option" onChange={(e) => handleChangeSort(e)}>
+            <option value={"Chose option"} disabled>
+              Chose option
             </option>
+            {Object.values(productSortTypes).map((option) => (
+              <option value={option} key={option}>
+                {option}
+              </option>
+            ))}
+          </Form.Select>
+        </Container>
+
+        <hr />
+
+        <Container>
+          <Form.Label>Sizes:</Form.Label>
+          {singleProduct.shoesSize.map(({ size }, i) => (
+            <Form.Check
+              checked={filterOptions.sizes.includes(size)}
+              onChange={(e) => handleUpdateCheckBox(e)}
+              value={size}
+              key={i}
+              id={size}
+              label={size}
+            ></Form.Check>
           ))}
-        </Form.Select>
-      </Container>
+        </Container>
 
-      <hr />
+        <hr />
 
-      <Container>
-        <Form.Label>Sizes:</Form.Label>
-        {filter.sizes.available.map((s, i) => (
-          <Form.Check
-            checked={filter.sizes.chosen.includes(s)}
-            onChange={(e) => handleUpdateCheckBox(e)}
-            value={s}
-            key={i}
-            id={s}
-            label={s}
-          ></Form.Check>
-        ))}
-      </Container>
-    </Col>
+        <Container className="d-flex flex-column gap-3">
+          <Button disabled={!activeButton.applyBtn || isLoading} onClick={aplyFilters}>
+            Accept filters
+          </Button>
+          <Button disabled={!activeButton.resetBtn || isLoading} onClick={resetFilters}>
+            Reset filters
+          </Button>
+        </Container>
+      </Col>
+    </Row>
   );
 };
 

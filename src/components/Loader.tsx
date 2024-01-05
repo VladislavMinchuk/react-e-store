@@ -2,7 +2,8 @@ import React from "react";
 import "../assets/styles/components/Loader.scss";
 
 interface LoaderProps {
-  positionValue: string;
+  // make union
+  positionValue: string; 
 }
 
 const Loader: React.FC<LoaderProps> = ({ positionValue }) => {
