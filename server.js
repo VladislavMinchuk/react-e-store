@@ -1,13 +1,16 @@
 import { writeFileSync } from 'fs';
 // 
 import { singleProduct } from './server_data/singleProduct.js';
+import {productList } from './server_data/productList.js';
+
 
 
 
 
 
 const combineData = {
-    singleProduct
+    productList,
+    singleProduct,
 }
 
 
