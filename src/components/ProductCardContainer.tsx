@@ -3,7 +3,7 @@ import ProductCard from "../components/ProductCard";
 import { IProductCartItem, IProductItem } from "../interfaces";
 import { RootState, useAppDispatch, useTypedSelector } from "../store";
 import { addCartItem } from "../store/actions/cart.action";
-import { selectProductCartById } from "../store/slices/cart.slice";
+import { getProductCartById } from "../store/slices/cart.slice";
 
 export type ProductContainerProps = {
   productItem: IProductItem;
@@ -11,7 +11,7 @@ export type ProductContainerProps = {
 
 const ProductContainer: FC<ProductContainerProps> = ({ productItem }) => {
   const dispatch = useAppDispatch();
-  const productInCart = useTypedSelector(({cartSlice}: RootState) => selectProductCartById(cartSlice, productItem.id))
+  const productInCart = useTypedSelector(({cartSlice}: RootState) => getProductCartById(cartSlice, productItem.id))
   // TODO: component re-renders several times (back to this fix)
   const addProductToCart = (productId: number) => {
     const { price, title } = productItem;
