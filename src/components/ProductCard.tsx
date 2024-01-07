@@ -49,14 +49,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="card-img-wrap">
           {/* Favorite  icon */}
           <CardPreviewCarousel imagesArray={images}></CardPreviewCarousel>
-          {/* Price info */}
-        </div>
-        <Card.Body>
-          <Card.Title>{title}</Card.Title>
-          <Card.Text> Colors: 3 </Card.Text>
-          <Card.Text> Price: {price}$ </Card.Text>
-          {/* TODO: move action buttons to the img wrapper */}
-          <div className="d-flex justify-content-between">
+          {/* Buttons wrapper */}
+          <div className="product-card__btn-wrap d-flex justify-content-between px-3 pt-2">
             <Link to={`/product/${id}`} className="link-light btn btn-primary text-center">
               View
             </Link>
@@ -71,6 +65,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </Button>
             }
           </div>
+        </div>
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text className="mb-1"> Colors: 3 </Card.Text>
+          <Card.Text> Price: {price}$ </Card.Text>
         </Card.Body>
       </div>
     </Card>
