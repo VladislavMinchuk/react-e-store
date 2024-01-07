@@ -7,6 +7,7 @@ import "../assets/styles/components/ProductCard.scss";
 
 export type ProductCardProps = IProductItem & {
   cardWidth?: string;
+  alreadyInCart?: boolean,
   addToCartItem?: (productId: number) => void;
 };
 
@@ -17,6 +18,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   title,
   price,
   images,
+  alreadyInCart,
   shoesSize,
   description,
 }) => {
@@ -58,9 +60,16 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <Link to={`/product/${id}`} className="link-light btn btn-primary text-center">
               View
             </Link>
-            <Button variant="secondary" className="text-white" onClick={() => addToCartItem && addToCartItem(id)}>
-              Add to cart
-            </Button>
+            {
+              alreadyInCart ?
+                <Link to={'/cart'} className="btn btn-warning text-center">
+                  Order
+                </Link>
+                :
+                <Button variant="secondary" className="text-white" onClick={() => addToCartItem && addToCartItem(id)}>
+                  Add to cart
+                </Button>
+            }
           </div>
         </Card.Body>
       </div>

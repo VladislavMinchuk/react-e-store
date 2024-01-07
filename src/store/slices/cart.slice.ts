@@ -8,8 +8,16 @@ export interface ICartSlice {
   error: unknown | null;
 }
 
+const getProductById = ({ userCart }: ICartSlice, id: number) =>
+  userCart?.products.find(p => p.id === id);
+
+// REMINDER: create adapter for products list
 const initialState: ICartSlice = {
-  userCart: null,
+  userCart: {
+    cartId: 9,
+    products: [],
+    payment: { total: 0 }
+  },
   error: null,
 };
 
@@ -17,59 +25,56 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    updateTotalPayment: (state) => {
-      if (state.userCart) {
-        state.userCart.payment.total = (state.userCart?.products || []).reduce(
+    updateTotalPayment: ({ userCart }) => {
+      if (userCart) {
+        userCart.payment.total = (userCart?.products || []).reduce(
           (acc, cur) => acc + cur.price * Number(cur.quantity),
           0
         );
       }
     },
-    // SOMNITELNO but OKEY???
-    getSumOfCartItems: (state, action) => {
-      const itemPrice = action.payload;
-      return state.userCart?.products.reduce((acc, cur) => acc + cur.price, itemPrice);
-    },
   },
 
   // Temp solution with extraReducers and the fake api requests
   extraReducers: (builder) => {
-    builder.addCase(getUserCart.fulfilled, (state, action: PayloadAction<ICartEntity | null>) => {
-      if (state.userCart) return;
-      state.userCart = action.payload;
+    builder.addCase(getUserCart.fulfilled, ({ userCart }, action: PayloadAction<ICartEntity | null>) => {
+      if (action.payload) userCart = action.payload;
     });
-    //Catch errors
-    builder.addCase(getUserCart.rejected, (state, action: PayloadAction<unknown>) => {
-      state.error = action.payload;
+    // Catch errors
+    builder.addCase(getUserCart.rejected, ({ error }, action: PayloadAction<unknown>) => {
+      error = action.payload;
     });
+    /**
+     I have removed 'mockCart' and 'if (!state.userCart?.products)' condition
+     becouse set default 'userCart' obj based on ICartEntity
+     alse we should take 'userCart' obj from api on the CartPage and some of the root components
+     (every time when user opens the app)
+     * */
     // Add new ProductCartItem
     builder.addCase(addCartItem.fulfilled, (state, action: PayloadAction<IProductCartItem>) => {
       const { payload: newCartItem } = action;
-      const hasItem = state.userCart?.products.find((p: IProductCartItem) => p.id === newCartItem.id);
+      const hasItem = getProductById(state, newCartItem.id);
+      
       if (hasItem) return state; // Return the same state if item already exist
-      // Add new item
 
-      const sumOfProducts = cartSlice.caseReducers.getSumOfCartItems(state, { payload: newCartItem.price, type: "" });
-      const mockCart = {
-        cartId: Date.now(),
-        products: state.userCart ? [...state.userCart.products, newCartItem] : [newCartItem],
-        payment: { total: sumOfProducts },
-      };
-      state.userCart = mockCart;
+      state.userCart?.products.push(newCartItem);
     });
-    builder.addCase(removeCartItem.fulfilled, (state, action: PayloadAction<number>) => {
-      if (!state.userCart?.products) return;
-      const { payload: productId } = action;
-      state.userCart.products = state.userCart?.products.filter((p) => p.id !== productId);
+    builder.addCase(removeCartItem.fulfilled, ({ userCart }, { payload: productId } : PayloadAction<number>) => {
+      if (!userCart?.products) return;
+      userCart.products = userCart?.products.filter((p) => p.id !== productId);
     });
-    builder.addCase(updateItemQuantity.fulfilled, (state, action: PayloadAction<IUpdateQuantityArgs>) => {
-      if (!state.userCart?.products) return;
-      const { payload: updatedItem } = action;
-      const { id, quantity } = updatedItem;
-      const currProduct = state.userCart.products.find((p) => p.id === id);
+    builder.addCase(updateItemQuantity.fulfilled, (state, { payload }: PayloadAction<IUpdateQuantityArgs>) => {
+      const { id, quantity } = payload;
+      const currProduct = getProductById(state, id);
       if (currProduct) currProduct.quantity = quantity;
     });
   },
 });
+
 export const { updateTotalPayment } = cartSlice.actions;
+
+export const getProductCartById = getProductById;
+export const getTotalPayment = ({ userCart }: ICartSlice) => userCart?.payment.total;
+export const getProductList = ({ userCart }: ICartSlice) => userCart?.products;
+
 export default cartSlice.reducer;

@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
-import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components/CartItem";
-import { useAppDispatch, useTypedSelector } from "../store";
-import { removeCartItem as removeCartItemAction, updateItemQuantity } from "../store/actions/cart.action";
-import { IProductCartItem } from "../interfaces";
-import { updateTotalPayment } from "../store/slices/cart.slice";
 import Loader from "../components/Loader";
+import CartItem, { IRemoveHandlerArgs, IUpdateQuantityArgs } from "../components/CartItem";
+import { IProductCartItem } from "../interfaces";
+import {  useAppDispatch, useTypedSelector } from "../store";
+import { getProductList, getTotalPayment, updateTotalPayment } from "../store/slices/cart.slice";
+import { removeCartItem as removeCartItemAction, updateItemQuantity, getUserCart } from "../store/actions/cart.action";
 
 const CartPage: React.FC = () => {
-  const dispatch = useAppDispatch();
-  const userCart = useTypedSelector((state) => state.cartSlice.userCart);
-  const isLoading = useTypedSelector((state) => state.global.isLoading);
+  const dispatch      = useAppDispatch();
+  const totalPayment  = useTypedSelector(({ cartSlice }) => getTotalPayment(cartSlice));
+  const productList   = useTypedSelector(({ cartSlice }) => getProductList(cartSlice));
+  const userCartError = useTypedSelector(({ cartSlice }) => cartSlice.error);
+  const isLoading     = useTypedSelector(({ global }) => global.isLoading);
 
   const removeCartItem = ({ productId }: IRemoveHandlerArgs): void => {
     dispatch(removeCartItemAction(productId));
@@ -22,7 +24,17 @@ const CartPage: React.FC = () => {
 
   useEffect(() => {
     dispatch(updateTotalPayment());
-  }, [userCart]);
+  }, [productList]);
+
+  useEffect(() => { // TODO: move to <App> ?
+    dispatch(getUserCart(1))    
+  }, []);
+
+  // TODO: create separete component or impl toast lib
+  if (userCartError) return (<p>
+      'Something went wrong ...'
+      {JSON.stringify(userCartError)}
+  </p>)
 
   return (
     <section className="cart-section py-5">
@@ -36,13 +48,13 @@ const CartPage: React.FC = () => {
             <Button variant="info" className="cart-section__order-btn w-100 mb-3">
               Continue order
             </Button>
-            <p>
-              <strong>Total:</strong> {userCart?.payment.total} ${isLoading && <Loader positionValue="static" />}
-            </p>
+            <div>
+              <strong>Total:</strong> {totalPayment} ${isLoading && <Loader positionValue="static" />}
+            </div>
           </Col>
           <Col xs={12} lg={10} xl={9} className="order-lg-1">
             <ul>
-              {userCart?.products.map((productItem: IProductCartItem) => {
+              {productList?.map((productItem: IProductCartItem) => {
                 return (
                   <li key={productItem.id} className="mb-2">
                     <CartItem {...productItem} removeHandler={removeCartItem} updateQuantity={updateCartItemQuantity} />
@@ -50,7 +62,7 @@ const CartPage: React.FC = () => {
                 );
               })}
             </ul>
-            {!userCart?.products.length && <p>Cart is empty...</p>}
+            {!productList?.length && <p>Cart is empty...</p>}
           </Col>
         </Row>
       </Container>
