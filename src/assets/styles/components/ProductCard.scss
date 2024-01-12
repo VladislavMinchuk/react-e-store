@@ -1,6 +1,7 @@
 .product-card {
   position: relative;
   border: none;
+  height: 100%;
   z-index: 10;
   
   &.isActive {

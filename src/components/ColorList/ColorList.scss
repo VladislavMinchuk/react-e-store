@@ -1,0 +1,22 @@
+.color-list {
+  display: inline-block;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &__item {
+    display: inline-block;
+    vertical-align: text-top;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    border: 1px solid $black;
+
+    &.last {
+      line-height: 1.2;
+      border: none;
+      width: auto;
+      height: auto;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CardPreviewCarousel from "./CardPreviewCarousel";
 import { IProductItem } from "../interfaces";
 import "../assets/styles/components/ProductCard.scss";
+import ColorList from "./ColorList";
 
 export type ProductCardProps = IProductItem & {
   cardWidth?: string;
@@ -19,10 +20,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   images,
   alreadyInCart,
+  colors,
   shoesSize,
   description,
 }) => {
-  const [cardHeight, setCardHeight] = useState("auto");
+  const [cardHeight, setCardHeight] = useState("100%");
   const [activeCard, setActiveCard] = useState("");
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const mouseLeaveHandler = () => {
-    setCardHeight("auto");
+    setCardHeight("100%");
     setActiveCard("");
   };
 
@@ -68,8 +70,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
         </div>
         <Card.Body>
           <Card.Title>{title}</Card.Title>
-          <Card.Text className="mb-1"> Colors: 3 </Card.Text>
-          <Card.Text> Price: {price}$ </Card.Text>
+          <Card.Text className="mb-1">
+            <ColorList maxItemsVisible={3} colors={colors}></ColorList>
+          </Card.Text>
+          <Card.Text> Price: <strong>{price}$</strong> </Card.Text>
         </Card.Body>
       </div>
     </Card>

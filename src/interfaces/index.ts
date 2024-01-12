@@ -5,11 +5,18 @@ export interface IProductItem {
   description: string;
   images: Array<string>; // image URL
   shoesSize: Array<ISize>;
+  colors: Array<IColor>
 }
 
 export interface ISize {
   id: number;
   size: string;
+}
+
+export interface IColor {
+  id: number;
+  title: string,
+  colorCode: string; // should be HEX code
 }
 
 export interface IProductCartItem {
