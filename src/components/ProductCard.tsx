@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import CardPreviewCarousel from "./CardPreviewCarousel";
 import { IProductItem } from "../interfaces";
 import "../assets/styles/components/ProductCard.scss";
+import ColorList from "./ColorList";
 
 export type ProductCardProps = IProductItem & {
   cardWidth?: string;
@@ -19,10 +20,11 @@ const ProductCard: React.FC<ProductCardProps> = ({
   price,
   images,
   alreadyInCart,
+  colors,
   shoesSize,
   description,
 }) => {
-  const [cardHeight, setCardHeight] = useState("auto");
+  const [cardHeight, setCardHeight] = useState("100%");
   const [activeCard, setActiveCard] = useState("");
 
   const cardRef = useRef<HTMLDivElement>(null);
@@ -33,7 +35,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   };
 
   const mouseLeaveHandler = () => {
-    setCardHeight("auto");
+    setCardHeight("100%");
     setActiveCard("");
   };
 
@@ -49,14 +51,8 @@ const ProductCard: React.FC<ProductCardProps> = ({
         <div className="card-img-wrap">
           {/* Favorite  icon */}
           <CardPreviewCarousel imagesArray={images}></CardPreviewCarousel>
-          {/* Price info */}
-        </div>
-        <Card.Body>
-          <Card.Title>{title}</Card.Title>
-          <Card.Text> Colors: 3 </Card.Text>
-          <Card.Text> Price: {price}$ </Card.Text>
-          {/* TODO: move action buttons to the img wrapper */}
-          <div className="d-flex justify-content-between">
+          {/* Buttons wrapper */}
+          <div className="product-card__btn-wrap d-flex justify-content-between px-3 pt-2">
             <Link to={`/product/${id}`} className="link-light btn btn-primary text-center">
               View
             </Link>
@@ -71,6 +67,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </Button>
             }
           </div>
+        </div>
+        <Card.Body>
+          <Card.Title>{title}</Card.Title>
+          <Card.Text className="mb-1">
+            <ColorList maxItemsVisible={3} colors={colors}></ColorList>
+          </Card.Text>
+          <Card.Text> Price: <strong>{price}$</strong> </Card.Text>
         </Card.Body>
       </div>
     </Card>

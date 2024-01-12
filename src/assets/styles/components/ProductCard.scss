@@ -1,6 +1,7 @@
 .product-card {
   position: relative;
   border: none;
+  height: 100%;
   z-index: 10;
   
   &.isActive {
@@ -10,14 +11,33 @@
       .product-card__content-wrap {
         box-shadow: 0px 0px 12px 0px rgba($black, .5);
       }
+
+      .product-card__btn-wrap {
+        height: 100%;
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
       
       .card-preview-carousel {
         &__nav-carousel {
           height: auto;
+          transform: translateY(0);
+          opacity: 1;
         }
       }
     }
 
+  }
+
+  &__btn-wrap {
+    @include media('>=desktop') {
+      opacity: 0;
+      visibility: hidden;
+      height: 0;
+      transform: translateY(-20px);
+      transition: transform 0.3s, opacity 0.3s;
+    }
   }
   
   &__content-wrap {
@@ -30,6 +50,9 @@
       @include media('>=desktop') {
         height: 0;
         overflow: hidden;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: transform 0.3s, opacity 0.3s;
       }
     }
   }
